@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    /* Smooth the font on the level of the pixel, as opposed to the subpixel. */
+    @apply antialiased;
+  }
+}
+
+/* CSS variables created from the theme colours, used for stop colors in SVG gradients e.g. */
+:root {
+  --color-primary-bold: theme('colors.primary.bold');
+  --color-primary-accent: theme('colors.primary.accent');
+  --color-secondary-bold: theme('colors.secondary.bold');
+}
+
+/* Check circle animation for Summary step */
+.checkmark {
+  animation: scale 0.3s ease-in-out 0.9s both;
+}
+
+.checkmark__circle {
+  animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark__check {
+  animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+@keyframes stroke {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes scale {
+  0%,
+  100% {
+    transform: none;
+  }
+  50% {
+    transform: scale3d(1.1, 1.1, 1);
+  }
+}
