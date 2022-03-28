@@ -46,7 +46,7 @@ module.exports = {
       // Neutral UI colours
       neutral: {
         subtle: '#F5F8F9', // subtle backgrounds to contrast with default white bg e.g.
-        'subtle-darker': '#EBEEEF', // <InstitutionsLoadingSkeleton />, disabled bg colour e.g.
+        'subtle-darker': '#EBEEEF', // disabled bg colour e.g.
         dim: '#DEE4E7', // border, divide colour
         'dim-darker': '#BECBD0', // form input border, radio circles e.g.
         muted: '#7E888E', // muted icons, e.g. in <SearchInput />

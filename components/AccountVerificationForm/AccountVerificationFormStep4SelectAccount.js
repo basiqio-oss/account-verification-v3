@@ -7,21 +7,19 @@ import { Button } from '../Button';
 import { ErrorScene } from '../ErrorScene';
 import { ErrorMessage } from '../ErrorMessage';
 import { useAccountVerificationForm } from './AccountVerificationFormProvider';
-import { StepLogo } from './StepLogo';
 import { StepHeading } from './StepHeading';
 import { StepDescription } from './StepDescription';
 
 export function AccountVerificationFormStep4SelectAccount() {
-  const { goToStep, goForward, accountVerificationFormState, updateAccountVerificationFormState } =
-    useAccountVerificationForm();
-  const { user, selectedInstitution } = accountVerificationFormState;
+  const { goForward, updateAccountVerificationFormState, goToConsent, getUserConsent } = useAccountVerificationForm();
+
+  const userId = sessionStorage.getItem("userId");
 
   const [selectedAccount, setSelectedAccount] = useState();
   const [validationError, setValidationError] = useState(false);
 
-  const { data, error, loading, refetch } = useAccountsData({
-    userId: user?.id,
-    institutionId: selectedInstitution?.id,
+  const { data, error, loading } = useAccountsData({
+    userId: userId,
   });
 
   const errorOrNoData = error || !data || data.length === 0;
@@ -37,14 +35,22 @@ export function AccountVerificationFormStep4SelectAccount() {
     }
   }
 
-  if (!user || !selectedInstitution) return null;
+  async function retryConnection() {
+    try {
+      await getUserConsent(userId)
+      goToConsent("connect")
+    } catch {
+      goToConsent()
+    }
+  }
+
+  if (!userId ) return null;
 
   return (
     <div className="flex flex-col flex-grow space-y-8 sm:space-y-12">
       {/* STEP LOGO */}
       {/* To help the user keep context of what product they're using, */}
       {/* and what bank they're about to connect to. */}
-      <StepLogo src={selectedInstitution.logo.links.square} alt={`Logo of ${selectedInstitution.name}`} />
 
       <div className="flex flex-col space-y-8">
         {/* STEP HEADING */}
@@ -59,7 +65,7 @@ export function AccountVerificationFormStep4SelectAccount() {
           {/* PRODUCT-COPY: Depending on what account features your product supports. */}
           {(loading || !errorOrNoData) && (
             <StepDescription>
-              Please select an account that allows direct debits. Many banks only allow withdrawals from transaction
+              Please select an account that will allow direct debits. Many banks only allow withdrawals from transaction
               accounts.
             </StepDescription>
           )}
@@ -71,8 +77,8 @@ export function AccountVerificationFormStep4SelectAccount() {
         ) : errorOrNoData ? (
           <ErrorScene
             title="Failed to load accounts"
-            message="Something went wrong whilst loading the list of accounts. If the problem persists, please contact support."
-            actionOnClick={refetch}
+            message="There was an error fetching your accounts, please retry the connection."
+            actionOnClick={(() => retryConnection())}
           />
         ) : (
           <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
@@ -159,8 +165,8 @@ export function AccountVerificationFormStep4SelectAccount() {
               <Button type="submit" block>
                 Finish
               </Button>
-              <Button type="button" variant="subtle" block onClick={() => goToStep(2)}>
-                Connect to a different bank
+              <Button type="button" variant="subtle" block onClick={(() => goToConsent("connect"))}>
+                Connect a different account
               </Button>
             </div>
           </form>
@@ -173,14 +179,14 @@ export function AccountVerificationFormStep4SelectAccount() {
 // RETRIEVE ACCOUNTS
 // Custom react hook for managing our fetch request to retrieves a list of accounts for the current user
 // The code for this API route can be found in `pages/api/accounts`
-function useAccountsData({ userId, institutionId }) {
+function useAccountsData({ userId }) {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState();
   const [error, setError] = useState();
 
   const fetchAccounts = useCallback(() => {
     axios
-      .get('/api/accounts', { params: { userId, institutionId } })
+      .get('/api/accounts', { params: { userId } })
       .then(res => {
         setData(res.data);
         setError(undefined);
@@ -190,7 +196,7 @@ function useAccountsData({ userId, institutionId }) {
         setError(error);
         setLoading(false);
       });
-  }, [institutionId, userId]);
+  }, [userId]);
 
   useEffect(() => {
     fetchAccounts();

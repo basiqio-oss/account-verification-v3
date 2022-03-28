@@ -1,4 +1,5 @@
-# Account verification
+# Account verification v3.0 : Supporting Open Banking
+### Supporting Open Banking 
 
 This starter kit takes a user through the account verification process using the Basiq API. This project has been to built with three main technologies:
 
@@ -10,6 +11,10 @@ This starter kit takes a user through the account verification process using the
    A utility-first CSS framework that can be composed to build any design, directly in your markup.
 
 ## Getting started
+
+#### This Starter Kit specifically supports v3.0 of the API and the Open Banking flow
+
+:warning: Please ensure you have enabled Basiq v3.0 for your API key before using this Starter Kit. If you do not wish to use v3.0 then please check out the v2.0 Starter Kit [here](https://github.com/basiqio/account-verification). 
 
 ### 1. Use the template to create your own repository
 
