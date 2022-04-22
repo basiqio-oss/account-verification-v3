@@ -3,8 +3,6 @@ import { useFormState } from 'react-use-form-state';
 import ms from 'ms';
 import { useTernaryState } from '../../utils/useTernaryState';
 import { Button } from '../Button';
-import { TextField } from '../TextField';
-import { PasswordField } from '../PasswordField';
 import { CircularProgressBar } from '../CircularProgressBar';
 import { ErrorMessage } from '../ErrorMessage';
 import { useAccountVerificationForm } from './AccountVerificationFormProvider';
@@ -14,13 +12,16 @@ export function AccountVerificationFormStep3InstitutionLogin() {
 
   useEffect(() => {
     let params = new URLSearchParams(window.location.search);
-    let jobId = params.get("jobId")
+    let newJobId = params.get("jobId")
+    createBasiqConnection(newJobId)
   })
+  const { basiqConnection } = useAccountVerificationForm();
+
   // State for managing hiding/showing of the resume in background modal
   const [isResumeModalOpen, openResumeModal, closeResumeModal] = useTernaryState(false);
-  const { goForward, basiqConnection } = useAccountVerificationForm();
+  const { goForward, createBasiqConnection } = useAccountVerificationForm();
 
-  const { error, progress, completed, stepNameInProgress, reset } = basiqConnection;
+  const { error, progress, completed, stepNameInProgress, reset, jobId } = basiqConnection;
 
   return (
     <div className="flex flex-col space-y-10 sm:space-y-12">

@@ -33,7 +33,8 @@ const AccountVerificationFormContext = createContext({
   // Function to be called when the user has successfully finished all steps
   hasCompletedForm: undefined,
   // Function to redirect user to Basiq Consent UI
-  goToConsent: undefined
+  goToConsent: undefined,
+  createBasiqConnection: undefined
 });
 
 // This custom hook gives components access the `AccountVerificationFormContext` form context
@@ -49,6 +50,7 @@ export function AccountVerificationFormProvider({ children }) {
   const router = useRouter();
 
   const [accountVerificationFormState, setAccountVerificationFormState] = useState(initialAccountVerificationFormState);
+  const [jobId, setJobId] = useState()
   const updateAccountVerificationFormState = newState => {
     setAccountVerificationFormState(oldState => ({ ...oldState, ...newState }));
   };
@@ -62,7 +64,7 @@ export function AccountVerificationFormProvider({ children }) {
   const goForward = () => setCurrentStep(step => (step === totalSteps - 1 ? totalSteps - 1 : currentStep + 1));
 
   // State for managing the basiq connection
-  const { basiqConnection, deleteBasiqConnection } = useBasiqConnection({
+  const { basiqConnection, createBasiqConnection, deleteBasiqConnection } = useBasiqConnection({
     currentStep,
     userId: accountVerificationFormState.user?.id,
     selectedInstitution: accountVerificationFormState.selectedInstitution,
@@ -133,10 +135,11 @@ export function AccountVerificationFormProvider({ children }) {
     updateAccountVerificationFormState,
     getUserConsent,
     basiqConnection,
+    createBasiqConnection,
     reset: resetState,
     hasCompletedForm,
     goToConsent,
-    deleteUser
+    deleteUser,
   };
 
   return (
@@ -145,7 +148,7 @@ export function AccountVerificationFormProvider({ children }) {
 }
 
 // Custom hook for managing the connect to the Basiq API
-function useBasiqConnection({ currentStep, userId, selectedInstitution }) {
+function useBasiqConnection({ currentStep, userId }) {
   const { asPath } = useRouter();
 
   const [jobId, setJobId] = useState();
@@ -171,10 +174,7 @@ function useBasiqConnection({ currentStep, userId, selectedInstitution }) {
 
   // The estimated time job is expected time to take (in milliseconds)
   // For this demo, we only care about the "verify-credentials" and "retrieve-accounts" step
-  const estimatedTime = selectedInstitution
-    ? selectedInstitution.stats.averageDurationMs.verifyCredentials +
-      selectedInstitution.stats.averageDurationMs.retrieveAccounts
-    : undefined;
+  const estimatedTime = 1000;
 
   async function deleteBasiqConnection() {
     if (!jobId || !userId) return;
@@ -186,10 +186,19 @@ function useBasiqConnection({ currentStep, userId, selectedInstitution }) {
     await deleteConnection({ userId });
   }
 
+
+  async function createBasiqConnection(jobId) {
+    setInProgress(true);
+    // Optimisic UI. We know the first job basiq will process will always be "verify-credentials"
+    setStepNameInProgress('verify-credentials');
+    setJobId(jobId);
+  }
+
   // If we have a basiq connection, check the status every 2 seconds
   useEffect(() => {
+    console.log('starting')
     // We can't start a job without this information
-    if (!jobId || !userId) return;
+    if (!jobId) return;
     // If a job was started, but an error occurred or it's finished, we can stop polling
     if (error || completed) return;
 
@@ -200,9 +209,9 @@ function useBasiqConnection({ currentStep, userId, selectedInstitution }) {
     const timer = setInterval(checkJobStatus, 2000);
 
     async function checkJobStatus() {
+      console.log('checking status')
       try {
         const response = await checkConnectionStatus({ jobId });
-
         // A job contains multiple steps which can either be "pending" | "in-progress" | "success" | "failed"
         // In this demo, we only care about the "verify-credentials" and "retrieve-accounts" steps
         const filteredSteps = response.data.steps.filter(
@@ -306,6 +315,7 @@ function useBasiqConnection({ currentStep, userId, selectedInstitution }) {
     },
     getUserConsent,
     deleteBasiqConnection,
+    createBasiqConnection
   };
 }
 
