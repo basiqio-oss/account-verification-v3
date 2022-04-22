@@ -7,12 +7,12 @@ import { AccountVerificationFormStep4SelectAccount } from './AccountVerification
 import { AccountVerificationFormStep5Summary } from './AccountVerificationFormStep5Summary';
 import { useAccountVerificationForm } from './AccountVerificationFormProvider';
 import { AccountVerificationFormCancellationModal } from './AccountVerificationFormCancellationModal';
-import { AccountVerificationFormStep3InstitutionLogin } from './AccountVerificationFormStep3InstitutionLogin';
+import { AccountVerificationFormStep3LoadingSteps } from './AccountVerificationFormStep3LoadingSteps';
 
 export const FORM_COMPONENTS = [
   AccountVerificationFormStep0SignUp,
   AccountVerificationFormStep1PreConsent,
-  AccountVerificationFormStep3InstitutionLogin,
+  AccountVerificationFormStep3LoadingSteps,
   AccountVerificationFormStep4SelectAccount,
   AccountVerificationFormStep5Summary,
 ];

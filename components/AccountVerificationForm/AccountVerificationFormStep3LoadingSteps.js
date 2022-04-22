@@ -8,7 +8,7 @@ import { ErrorMessage } from '../ErrorMessage';
 import { useAccountVerificationForm } from './AccountVerificationFormProvider';
 import { AccountVerificationFormResumeInBackgroundModal } from './AccountVerificationFormResumeInBackgroundModal';
 
-export function AccountVerificationFormStep3InstitutionLogin() {
+export function AccountVerificationFormStep3LoadingSteps() {
 
   useEffect(() => {
     let params = new URLSearchParams(window.location.search);
@@ -21,7 +21,7 @@ export function AccountVerificationFormStep3InstitutionLogin() {
   const [isResumeModalOpen, openResumeModal, closeResumeModal] = useTernaryState(false);
   const { goForward, createBasiqConnection } = useAccountVerificationForm();
 
-  const { error, progress, completed, stepNameInProgress, reset, jobId } = basiqConnection;
+  const { error, progress, completed, stepNameInProgress, reset } = basiqConnection;
 
   return (
     <div className="flex flex-col space-y-10 sm:space-y-12">

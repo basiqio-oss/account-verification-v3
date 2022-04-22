@@ -320,7 +320,7 @@ function useBasiqConnection({ currentStep, userId }) {
 }
 
 // The reason for attatching these properties to the error object is because we will use
-// thes e properties to display information about the error in `AccountVerificationFormStep3InstitutionLogin`
+// thes e properties to display information about the error in `AccountVerificationFormStep3LoadingSteps`
 function newStepError({ detail, title }) {
   const error = new Error();
   error.message = detail;
