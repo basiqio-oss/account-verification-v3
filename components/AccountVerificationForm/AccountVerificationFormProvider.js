@@ -300,7 +300,7 @@ function useBasiqConnection({ currentStep, userId }) {
   const estimatedTimeOver = inProgress && estimatedProgress >= 95;
 
   // If the job is taking longer than the expected we will show 95% until the job is raedy
-  const progress = estimatedTimeOver ? 95 : estimatedProgress;
+  const progress = estimatedProgress;
 
   return {
     basiqConnection: {
