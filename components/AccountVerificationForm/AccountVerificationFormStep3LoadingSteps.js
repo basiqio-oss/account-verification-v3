@@ -64,7 +64,6 @@ export function AccountVerificationFormStep3LoadingSteps() {
   );
 }
 
-
 const STEP_NAME_MAP = {
   'verify-credentials': 'Verifying credentials...',
   'retrieve-accounts': 'Retrieving accounts...',
