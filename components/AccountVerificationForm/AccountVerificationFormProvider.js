@@ -196,7 +196,6 @@ function useBasiqConnection({ currentStep, userId }) {
 
   // If we have a basiq connection, check the status every 2 seconds
   useEffect(() => {
-    console.log('starting')
     // We can't start a job without this information
     if (!jobId) return;
     // If a job was started, but an error occurred or it's finished, we can stop polling
