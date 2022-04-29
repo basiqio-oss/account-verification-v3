@@ -50,7 +50,6 @@ export function AccountVerificationFormProvider({ children }) {
   const router = useRouter();
 
   const [accountVerificationFormState, setAccountVerificationFormState] = useState(initialAccountVerificationFormState);
-  const [jobId, setJobId] = useState()
   const updateAccountVerificationFormState = newState => {
     setAccountVerificationFormState(oldState => ({ ...oldState, ...newState }));
   };
@@ -159,7 +158,6 @@ function useBasiqConnection({ currentStep, userId }) {
   const [error, setError] = useState();
 
   function resetState() {
-    setJobId(undefined);
     setInProgress(false);
     setEstimatedProgress(undefined);
     setStepNameInProgress(undefined);
@@ -181,17 +179,12 @@ function useBasiqConnection({ currentStep, userId }) {
     await deleteConnection({ jobId, userId });
   }
 
-  async function deleteUser() {
-    let userId = sessionStorage.getItem("userId")
-    await deleteConnection({ userId });
-  }
-
-
-  async function createBasiqConnection(jobId) {
+  async function createBasiqConnection() {
+    let newJobId = new URLSearchParams(window.location.search).get("jobId");
     setInProgress(true);
     // Optimisic UI. We know the first job basiq will process will always be "verify-credentials"
     setStepNameInProgress('verify-credentials');
-    setJobId(jobId);
+    setJobId(newJobId);
   }
 
   // If we have a basiq connection, check the status every 2 seconds
@@ -208,7 +201,6 @@ function useBasiqConnection({ currentStep, userId }) {
     const timer = setInterval(checkJobStatus, 2000);
 
     async function checkJobStatus() {
-      console.log('checking status')
       try {
         const response = await checkConnectionStatus({ jobId });
         // A job contains multiple steps which can either be "pending" | "in-progress" | "success" | "failed"
@@ -304,6 +296,8 @@ function useBasiqConnection({ currentStep, userId }) {
   return {
     basiqConnection: {
       inProgress,
+      jobId,
+      setJobId,
       progress,
       stepNameInProgress,
       estimatedTime,
@@ -344,7 +338,7 @@ async function deleteConnection({ userId, jobId }) {
   return response.data.id;
 }
 
-async function deleteUser({ userId, jobId }) {
+async function deleteUser({ userId }) {
   const response = await axios.delete(`https://au-api.basiq.io/users/${userId}`);
   return response.data.id;
 }

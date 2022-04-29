@@ -1,33 +1,28 @@
-import { useState, useMemo, useEffect } from 'react';
-import { useFormState } from 'react-use-form-state';
-import ms from 'ms';
+import { useEffect } from 'react';
 import { useTernaryState } from '../../utils/useTernaryState';
 import { Button } from '../Button';
 import { CircularProgressBar } from '../CircularProgressBar';
-import { ErrorMessage } from '../ErrorMessage';
 import { useAccountVerificationForm } from './AccountVerificationFormProvider';
 import { AccountVerificationFormResumeInBackgroundModal } from './AccountVerificationFormResumeInBackgroundModal';
 
 export function AccountVerificationFormStep3LoadingSteps() {
 
-  useEffect(() => {
-    let params = new URLSearchParams(window.location.search);
-    let newJobId = params.get("jobId")
-    createBasiqConnection(newJobId)
-  })
-  const { basiqConnection } = useAccountVerificationForm();
-
   // State for managing hiding/showing of the resume in background modal
   const [isResumeModalOpen, openResumeModal, closeResumeModal] = useTernaryState(false);
-  const { goForward, createBasiqConnection } = useAccountVerificationForm();
 
-  const { error, progress, completed, stepNameInProgress, reset } = basiqConnection;
+  const { basiqConnection, goForward } = useAccountVerificationForm();
+  const { error, progress, completed, stepNameInProgress, reset, setJobId } = basiqConnection;
+
+  useEffect(() => {
+    const newJobId = new URLSearchParams(window.location.search).get("jobId");
+    setJobId(newJobId);
+  }, [])
 
   return (
     <div className="flex flex-col space-y-10 sm:space-y-12">
       <div className="flex flex-col items-center text-center space-y-8">
         <CircularProgressBar value={progress} error={error} />
-
+    
         {error ? (
           <div className="w-full space-y-8">
             <div className="space-y-3 sm:space-y-4">
