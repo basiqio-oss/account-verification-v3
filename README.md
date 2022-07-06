@@ -33,6 +33,8 @@ cd account-verification
 
 If you haven't already, [Sign-up](https://dashboard.basiq.io/login) to the Basiq API service and grab your API key for your application (via the [Developer Dashboard](https://dashboard.basiq.io/)).
 
+:warning: Don't forget to configure your dashboard appropriately - especially your redirect URL. Read more about that [here](https://api.basiq.io/docs/dash-configuration). 
+
 Once you have a Basiq API key, move the sample `.env.sample` file to `.env.local` and paste in your Basiq API key next to `BASIQ_API_KEY=`
 
 ```sh
