@@ -1,7 +1,7 @@
-# Account verification v3.0 : Supporting Open Banking
+# Personal Finance App v3.0 : Supporting Open Banking
 ### Supporting Open Banking 
 
-This starter kit takes a user through the account verification process using the Basiq API. This project has been to built with three main technologies:
+This starter kit takes a user through the personal finance app using the Basiq API. This project has been to built with three main technologies:
 
 1. [Basiq API](https://api.basiq.io)
    Basiq is a Consumer Data Right accredited API platform that provides the building blocks of financial services.
