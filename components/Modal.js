@@ -42,7 +42,7 @@ export function Modal({ children, isOpen, onClose, initialFocus }) {
 
 export function ModalTitle({ children }) {
   return (
-    <Dialog.Title as="h3" className="text-2xl font-semibold leading-tight tracking-tight">
+    <Dialog.Title as="h3" className="text-2xl font-semibold leading-tight tracking-tight text-primary-bold">
       {children}
     </Dialog.Title>
   );

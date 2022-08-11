@@ -15,27 +15,27 @@ export default function Home() {
     <div>
       <SEO />
       <main className="flex flex-col justify-center min-h-screen bg-gradient-to-tr from-primary-bold to-primary-accent">
-        <div className="z-10 max-w-md px-4 pt-8 pb-16 mx-auto text-center space-y-6 sm:space-y-8">
-          {/* PRODUCT LOGO */}
-          <div className="inline-block space-y-6 sm:space-y-8">
-            <img src="/product-logo-full.svg" alt="Piper logo" width={79} height={102} />
-            <div className="w-full bg-primary-accent h-[1px]">
-              <div className="border-b border-white mix-blend-soft-light" />
-            </div>
+        <div className="z-10 sm:px-72 sm:pt-12 px-4 pb-16 mx-auto text-center space-y-6 sm:space-y-8 sm:bg-neutral-subtle-alternate/50 rounded-2xl backdrop-opacity-60">
+          {/* PRODUCT LOGO z-10 max-w-md px-4 pt-8 pb-16 mx-auto text-center space-y-6 sm:space-y-8 */}
+          <div className="opacity-100 inline-block space-y-6 sm:space-y-8">
+            <img src="/product-logo-square.svg" alt="Piper logo" width={100} height={100} className="z-10" />
           </div>
 
           <div className="space-y-4">
             {/* PRODUCT-COPY HEADING */}
             <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-              Start optimising <br />
-              your savings
+              Personal Finance Management
             </h1>
 
             {/* PRODUCT-COPY SHORT DESCRIPTION */}
-            <p className="text-sm leading-relaxed text-white sm:text-base text-opacity-90">
-              Piper helps you track and optimise your savings. For every dollar saved you get 10% cashback into your
-              account.
-            </p>
+            <div className="!mt-12 !mb-12 max-w-lg container mx-auto">
+              <p className="!text-lg leading-relaxed text-white sm:text-base text-opacity-90">
+                <b>Start optimising your savings</b>
+              </p>
+              <p className="!sm:text-lg !text-base leading-relaxed text-white sm:text-base text-opacity-90 mt-4">
+                PFM helps you track and optimise your savings. For every dollar saved you get 10% cashback into your account.
+              </p>
+            </div>
           </div>
 
           {hasCompletedForm ? (
@@ -78,7 +78,7 @@ export default function Home() {
                 )}
                 {/* ACTION */}
                 <Link href="/account-verification" passHref>
-                  <Button as="a" variant="inverted" block>
+                  <Button as="a" variant="bold" block>
                     {basiqConnectionInProgress || basiqConnectionSuccess ? 'Continue setup' : 'Get started'}
                   </Button>
                 </Link>
@@ -86,14 +86,20 @@ export default function Home() {
             </div>
           )}
         </div>
-
-        {/* Decorative blurry circles */}
-        <div className="absolute w-full h-screen overflow-hidden">
-          <div className="absolute -mt-64 bg-white rounded-full opacity-40 w-80 h-80 top-1/2 left-1/2 -ml-[800px] blur-xl mix-blend-overlay" />
-          <div className="absolute -mt-10 bg-white rounded-full opacity-50 w-52 h-52 top-1/2 left-1/2 -ml-80 blur-md mix-blend-overlay" />
-          <div className="absolute -ml-16 bg-white rounded-full -mt-[550px] opacity-10 w-72 h-72 top-1/2 left-1/2 blur-2xl mix-blend-overlay" />
-          <div className="absolute w-32 h-32 ml-24 -mt-32 bg-white rounded-full opacity-25 top-1/2 left-1/2 blur-sm mix-blend-overlay" />
-          <div className="absolute mt-24 bg-white rounded-full opacity-40 w-96 h-96 top-1/2 left-1/2 ml-[450px] blur-xl mix-blend-overlay" />
+        {/* Decorative blurry circles*/} 
+        <div className="absolute w-full h-screen">
+          <div className="absolute w-[243px] h-[243px] top-16 left-48 sm:block hidden">
+            <img src="/planet-top-left.svg" alt="planet1" />
+          </div>
+          <div className="absolute sm:w-[297px] sm:h-[347px] sm:-top-4 sm:right-0 w-[227px] h-[257px] right-0">
+            <img src="/planet-top-right.svg" alt="planet2"/>
+          </div>
+          <div className="absolute sm:w-[500px] sm:h-[500px] sm:bottom-12 sm:left-0 w-[200px] h-[200px] bottom-4 -left-16">
+            <img src="/planet-bottom-left.svg" alt="planet3"/>
+          </div>
+          <div className="absolute w-[256px] h-[256px] bottom-28 right-48 -rotate-[15deg] sm:block hidden">
+            <img src="/planet-bottom-right.svg" alt="planet3"/>
+          </div>
         </div>
       </main>
     </div>
