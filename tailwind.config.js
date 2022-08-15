@@ -50,6 +50,7 @@ module.exports = {
       blue: '#4A56E2', // text colour of the /personal-finance flow
       'border-color': 'rgba(231, 239, 255, 0.61)',
       overlay: 'rgba(80, 80, 80, 0.2)',
+      'green-link': '#24CCA7',
 
       // Neutral UI colours
       neutral: {
@@ -108,7 +109,6 @@ module.exports = {
       height: {
        '40': '10rem',
        '80': '20rem',
-       '520': '136rem'
       },
       keyframes: {
         pingSlow: {
