@@ -1,7 +1,7 @@
 import { Header } from "../Header";
 import { Footer } from "../Footer";
 import { MenuIcon } from "../MenuIcon";
-import { Menu } from '../Menu';
+import { MenuDesktop } from '../MenuDesktop';
 import { useToggleState } from "../../utils/useToggleState";
 
 export function PersonalFinanceDesktopLayout() {
@@ -13,16 +13,16 @@ export function PersonalFinanceDesktopLayout() {
         <MenuIcon isOpen={open} click={setOpen}></MenuIcon>
         <div className="flex items-center mr-40">
           <div className="mr-6">
-            <img className="w-16 h-14" src='/add-account.svg' alt="Add Account"></img>
+            <img className="w-16 h-14" src='/add-account.svg' alt="Add Account" />
           </div>
           <div>
-            <img className="w-16 h-14" src='/view-profile.svg' alt="View Profile"></img>
+            <img className="w-16 h-14" src='/view-profile.svg' alt="View Profile" />
           </div>
         </div>
       </Header>
       <div>
         <div className="fixed z-40 ml-40 bg-blue">
-          {open && <Menu></Menu>}
+          {open && <MenuDesktop></MenuDesktop>}
         </div>
         <div className="z-0 w-full h-full bg-menu mt-[9.5rem]">
           <div className="flex-col w-full h-full">
