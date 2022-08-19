@@ -43,14 +43,9 @@ export function AccountVerificationForm() {
 
       {/* FORM STEPS COMPONENT */}
       <div className="z-10 sm:px-64 px-8 sm:pb-16 pb-24 mx-auto text-center space-y-6 sm:space-y-8 sm:bg-neutral-subtle-alternate/50 rounded-2xl backdrop-opacity-60">
-        {currentStep === 1 
-        ? <div className="absolute top-0 left-6 sm:w-12 sm:h-12 w-10 sm:block hidden">
-            <StepLogo src="/product-logo-square.svg" alt="Piper logo" />
-          </div>
-        : <div className="absolute top-0 left-6 sm:w-12 sm:h-12 w-10">
-            <StepLogo src="/product-logo-square.svg" alt="Piper logo" />
-          </div>
-        }
+        <div className={`absolute top-0 left-6 sm:w-12 sm:h-12 w-10 ${currentStep === 1 && "sm:block hidden"}`}>
+          <StepLogo src="/product-logo-square.svg" alt="Piper logo" />
+        </div>
         <Component />
       </div>
 
