@@ -7,7 +7,7 @@ export function TextField({ id, label, type = 'text', error, ...props }) {
         id={id}
         {...props}
       />
-      <label htmlFor={id} className="absolute pl-3 mb-0 pt-2 text-gray-400 text-xs label leading-tighter text-primary-bold font-Inter">
+      <label htmlFor={id} className="absolute pt-2 pl-3 mb-0 text-xs text-gray-400 label leading-tighter text-primary-bold font-Inter">
         {label}
       </label>
       {error && <span className="block text-sm text-critical-bold-darker">{error}</span>}

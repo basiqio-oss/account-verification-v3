@@ -1,17 +1,16 @@
+import { useState } from 'react';
 import { useTernaryState } from '../../utils/useTernaryState';
 import { Button } from '../Button';
 import { AccountVerificationFormLearnMoreModal } from './AccountVerificationFormLearnMoreModal';
-import { StepLogo } from './StepLogo';
 import { StepHeading } from './StepHeading';
 import { StepDescription } from './StepDescription';
 import { useAccountVerificationForm } from './AccountVerificationFormProvider';
-import { useState } from 'react';
 
 export function AccountVerificationFormStep1PreConsent() {
   const { goToConsent } = useAccountVerificationForm()
   const [submitting, setSubmitting] = useState(false)
   // State for managing hiding/showing of the learn more model
-  const [isLearnMoreModalOpen, openLearnMoreModal, closeLearnMoreModal] = useTernaryState(false);
+  const [isLearnMoreModalOpen, closeLearnMoreModal] = useTernaryState(false);
 
   return (
     <div className="flex flex-col flex-grow space-y-8 sm:space-y-12">
@@ -40,21 +39,21 @@ export function AccountVerificationFormStep1PreConsent() {
         for why it's 100% secure to connect to their bank through the app. */}
         <ul role="list" className="rounded-lg">
           {/* Secure argument 1 */}
-          <li className="flex sm:flex-row flex-col sm:h-20 items-center px-4 py-3 rounded-lg sm:px-6 bg-gradient-to-tr from-primary-bold to-secondary-bold space-x-4">
+          <li className="flex flex-col items-center px-4 py-3 rounded-lg sm:flex-row sm:h-20 sm:px-6 bg-gradient-to-tr from-primary-bold to-secondary-bold space-x-4">
             {/* Icon: shield-check (outline) */}
-            <div className="sm:ml-4 mb-2">
-                <img src="/shield.svg" alt="shield" className="sm:h-6 h-6"/>
+            <div className="mb-2 sm:ml-4">
+                <img src="/shield.svg" alt="shield" className="h-6 sm:h-6"/>
               </div>
-            <div className="flex flex-grow font-medium leading-snug text-white text-base sm:text-lg sm:pl-4">
+            <div className="flex flex-grow text-base font-medium leading-snug text-white sm:text-lg sm:pl-4">
               Bank grade 256-bit SSL encryption
             </div>
           </li>
 
           {/* Secure argument 2 */}
-          <li className="flex items-center px-4 sm:py-6 py-3 sm:px-6 space-x-4 bg-primary-subtle-accent">
+          <li className="flex items-center px-4 py-3 sm:py-6 sm:px-6 space-x-4 bg-primary-subtle-accent">
               {/* Icon: key (outline) */}
               <div className="sm:ml-4">
-                <img src="/key.svg" alt="key" className="sm:h-5 h-6"/>
+                <img src="/key.svg" alt="key" className="h-6 sm:h-5"/>
               </div>
               <div className="flex flex-grow text-sm text-primary-bold sm:!ml-8 !ml-0">
                 We never save your bank login credentials in the app
@@ -62,10 +61,10 @@ export function AccountVerificationFormStep1PreConsent() {
           </li>
 
           {/* Secure argument 3 */}
-          <li className="flex items-center px-4 sm:py-6 py-3 sm:px-6 space-x-4 bg-primary-subtle-accent rounded-b-lg">
+          <li className="flex items-center px-4 py-3 rounded-b-lg sm:py-6 sm:px-6 space-x-4 bg-primary-subtle-accent">
             {/* Icon: credit-card (outline) */}
             <div className="sm:ml-4">
-                <img src="/wallet.svg" alt="key" className="sm:h-5 h-6"/>
+                <img src="/wallet.svg" alt="key" className="h-6 sm:h-5"/>
               </div>
             <div className="flex flex-grow text-sm text-primary-bold sm:!ml-8 !ml-8 !pr-8">
               We cannot make transactions on your behalf
@@ -88,7 +87,7 @@ export function AccountVerificationFormStep1PreConsent() {
         </p>
 
         {/* ACTIONS */}
-        <div className="space-y-2 sm:w-64 w-full mx-auto">
+        <div className="w-full mx-auto space-y-2 sm:w-64">
           <Button variant="bold" block loading={submitting} disabled={submitting} onClick={(() => { goToConsent(); setSubmitting(true)})} data-cy="current-step">
             Continue
           </Button>

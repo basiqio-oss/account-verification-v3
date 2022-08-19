@@ -9,7 +9,7 @@ import { StepLogo } from './StepLogo';
 import { StepHeading } from './StepHeading';
 
 export function AccountVerificationFormStep0SignUp() {
-  const { goToStep, cancel, updateAccountVerificationFormState, goForward } = useAccountVerificationForm();
+  const { goToStep, updateAccountVerificationFormState, goForward } = useAccountVerificationForm();
 
   const [formState, { email }] = useFormState();
   const [submitting, setSubmitting] = useState(false);
@@ -42,7 +42,7 @@ export function AccountVerificationFormStep0SignUp() {
   }
   
   return (
-    <div className="sm:w-[36rem] flex flex-col space-y-6 sm:h-fit h-screen sm:static relative">
+    <div className="relative flex flex-col h-screen sm:w-[36rem] space-y-6 sm:h-fit sm:static">
         {/* STEP LOGO */}
       {/* To help the user keep context of what product they're using, */}
       {/* and what bank they're about to connect to. */}
@@ -78,12 +78,12 @@ export function AccountVerificationFormStep0SignUp() {
             {/* Terms and Conditions */}
             {/* PRODUCT-COPY: Depending on your product (if you're adding a real user account creation e.g.) */}
             <div className="absolute bottom-16 sm:static">
-              <p className="max-w-xs mx-auto text-xs leading-relaxed text-center sm:text-white sm:!mt-20 sm:mb-4 mb-8">
+              <p className="max-w-xs mx-auto mb-8 text-xs leading-relaxed text-center sm:text-white sm:!mt-20 sm:mb-4">
                 By continuing you agree to the Terms and Conditions and our Privacy Policy.
               </p>
 
             {/* Actions */}
-              <div className="space-y-2 sm:w-64 mx-auto">
+              <div className="mx-auto space-y-2 sm:w-64">
                 <Button type="submit" loading={submitting} variant="bold" block data-cy="current-step">
                   Continue
                 </Button>

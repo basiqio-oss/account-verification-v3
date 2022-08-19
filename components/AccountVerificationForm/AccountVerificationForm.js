@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useTernaryState } from '../../utils/useTernaryState';
-import { ProgressBar } from '../ProgressBar';
 import { StepLogo } from './StepLogo';
 import { AccountVerificationFormStep0SignUp } from './AccountVerificationFormStep0SignUp';
 import { AccountVerificationFormStep1PreConsent } from './AccountVerificationFormStep1PreConsent';
@@ -19,7 +18,7 @@ export const FORM_COMPONENTS = [
 ];
 
 export function AccountVerificationForm() {
-  const { currentStep, totalSteps, cancel, cancelling, goBack, goForward } = useAccountVerificationForm();
+  const { currentStep, totalSteps, cancel, cancelling } = useAccountVerificationForm();
   const Component = FORM_COMPONENTS[currentStep];
 
   // State for managing hiding/showing of the cancellation model
@@ -42,7 +41,7 @@ export function AccountVerificationForm() {
  
 
       {/* FORM STEPS COMPONENT */}
-      <div className="z-10 sm:px-64 px-8 sm:pb-16 pb-24 mx-auto text-center space-y-6 sm:space-y-8 sm:bg-neutral-subtle-alternate/50 rounded-2xl backdrop-opacity-60">
+      <div className="z-10 px-8 pb-24 mx-auto text-center sm:px-64 sm:pb-16 space-y-6 sm:space-y-8 sm:bg-neutral-subtle-alternate/50 rounded-2xl backdrop-opacity-60">
         <div className={`absolute top-0 left-6 sm:w-12 sm:h-12 w-10 ${currentStep === 1 && "sm:block hidden"}`}>
           <StepLogo src="/product-logo-square.svg" alt="Piper logo" />
         </div>
@@ -77,16 +76,16 @@ export function AccountVerificationForm() {
         cancelling={cancelling}
       />
       <div className="absolute w-full h-screen">
-          <div className="absolute w-[243px] h-[243px] top-16 left-48 sm:block hidden">
+          <div className="absolute hidden w-[243px] h-[243px] top-16 left-48 sm:block">
             <img src="/planet-top-left.svg" alt="planet1" />
           </div>
-          <div className="absolute sm:w-[297px] sm:h-[347px] sm:-top-4 sm:right-0 w-[227px] h-[257px] right-0 sm:block hidden">
+          <div className="absolute right-0 hidden sm:w-[297px] sm:h-[347px] sm:-top-4 sm:right-0 w-[227px] h-[257px] sm:block">
             <img src="/planet-top-right.svg" alt="planet2"/>
           </div>
-          <div className="absolute sm:w-[500px] sm:h-[500px] sm:bottom-12 sm:left-0 w-[200px] h-[200px] bottom-4 -left-16 sm:block hidden">
+          <div className="absolute hidden sm:w-[500px] sm:h-[500px] sm:bottom-12 sm:left-0 w-[200px] h-[200px] bottom-4 -left-16 sm:block">
             <img src="/planet-bottom-left.svg" alt="planet3"/>
           </div>
-          <div className="absolute w-[256px] h-[256px] bottom-28 right-48 -rotate-[15deg] sm:block hidden">
+          <div className="absolute hidden w-[256px] h-[256px] bottom-28 right-48 -rotate-[15deg] sm:block">
             <img src="/planet-bottom-right.svg" alt="planet3"/>
           </div>
         </div>

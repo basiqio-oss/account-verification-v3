@@ -15,9 +15,9 @@ export default function Home() {
     <div>
       <SEO />
       <main className="flex flex-col justify-center min-h-screen bg-gradient-to-tr from-primary-bold to-primary-accent">
-        <div className="z-10 sm:px-72 sm:pt-12 px-4 pb-16 mx-auto text-center space-y-6 sm:space-y-8 sm:bg-neutral-subtle-alternate/50 rounded-2xl backdrop-opacity-60">
+        <div className="z-10 px-4 pb-16 mx-auto text-center sm:px-72 sm:pt-12 space-y-6 sm:space-y-8 sm:bg-neutral-subtle-alternate/50 rounded-2xl backdrop-opacity-60">
           {/* PRODUCT LOGO z-10 max-w-md px-4 pt-8 pb-16 mx-auto text-center space-y-6 sm:space-y-8 */}
-          <div className="opacity-100 inline-block space-y-6 sm:space-y-8">
+          <div className="inline-block opacity-100 space-y-6 sm:space-y-8">
             <img src="/product-logo-square.svg" alt="Piper logo" width={100} height={100} className="z-10" />
           </div>
 
@@ -28,11 +28,11 @@ export default function Home() {
             </h1>
 
             {/* PRODUCT-COPY SHORT DESCRIPTION */}
-            <div className="!mt-12 !mb-12 max-w-lg container mx-auto">
-              <p className="!text-lg leading-relaxed text-white sm:text-base text-opacity-90">
+            <div className="container max-w-lg mx-auto !mt-12 !mb-12">
+              <p className="leading-relaxed text-white !text-lg sm:text-base text-opacity-90">
                 <b>Start optimising your savings</b>
               </p>
-              <p className="!sm:text-lg !text-base leading-relaxed text-white sm:text-base text-opacity-90 mt-4">
+              <p className="mt-4 leading-relaxed text-white !sm:text-lg !text-base sm:text-base text-opacity-90">
                 PFM helps you track and optimise your savings. For every dollar saved you get 10% cashback into your account.
               </p>
             </div>
@@ -88,16 +88,16 @@ export default function Home() {
         </div>
         {/* Decorative blurry circles*/} 
         <div className="absolute w-full h-screen">
-          <div className="absolute w-[243px] h-[243px] top-16 left-48 sm:block hidden">
+          <div className="absolute hidden w-[243px] h-[243px] top-16 left-48 sm:block">
             <img src="/planet-top-left.svg" alt="planet1" />
           </div>
-          <div className="absolute sm:w-[297px] sm:h-[347px] sm:-top-4 sm:right-0 w-[227px] h-[257px] right-0">
+          <div className="absolute right-0 sm:w-[297px] sm:h-[347px] sm:-top-4 sm:right-0 w-[227px] h-[257px]">
             <img src="/planet-top-right.svg" alt="planet2"/>
           </div>
           <div className="absolute sm:w-[500px] sm:h-[500px] sm:bottom-12 sm:left-0 w-[200px] h-[200px] bottom-4 -left-16">
             <img src="/planet-bottom-left.svg" alt="planet3"/>
           </div>
-          <div className="absolute w-[256px] h-[256px] bottom-28 right-48 -rotate-[15deg] sm:block hidden">
+          <div className="absolute hidden w-[256px] h-[256px] bottom-28 right-48 -rotate-[15deg] sm:block">
             <img src="/planet-bottom-right.svg" alt="planet3"/>
           </div>
         </div>
