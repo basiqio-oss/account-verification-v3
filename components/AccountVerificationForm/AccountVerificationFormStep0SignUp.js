@@ -84,7 +84,7 @@ export function AccountVerificationFormStep0SignUp() {
 
             {/* Actions */}
               <div className="space-y-2 sm:w-64 mx-auto">
-                <Button type="submit" loading={submitting} variant="bold" block>
+                <Button type="submit" loading={submitting} variant="bold" block data-cy="current-step">
                   Continue
                 </Button>
               </div>

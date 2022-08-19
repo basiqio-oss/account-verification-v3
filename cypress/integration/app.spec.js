@@ -20,7 +20,7 @@ describe('Account verification form', () => {
     // Start from the "/account-verification" page
     cy.visit('http://localhost:3000/account-verification');
     // Check the step number is 1
-    cy.get('[data-cy="current-step"]').contains('1');
+    cy.get('[data-cy="current-step"]').contains('Continue');
     // Fill out the email form field
     cy.get('#email').should('be.visible').type(fixtures.email);
     // Submit the form
@@ -29,11 +29,11 @@ describe('Account verification form', () => {
 
   it('Completes step 1 - PreConsent', () => {
     // Check the step number
-    cy.get('[data-cy="current-step"]').contains('2');
+    cy.get('[data-cy="current-step"]').contains('Continue');
     // Open the learn more modal
-    cy.contains('Learn more').click();
+    //cy.contains('Learn more').click(); we don't have it anymore
     // Proceed to the next step
-    cy.contains('Securely connect my account').click();
+    cy.contains('Continue').click();
   });
 
   it('Completes redirect', () => {
