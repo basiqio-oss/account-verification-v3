@@ -12,6 +12,11 @@ export function AccountVerificationFormStep1PreConsent() {
   // State for managing hiding/showing of the learn more model
   const [isLearnMoreModalOpen, closeLearnMoreModal] = useTernaryState(false);
 
+  const onContinue = () => { 
+    goToConsent(); 
+    setSubmitting(true);
+  }
+
   return (
     <div className="flex flex-col flex-grow space-y-8 sm:space-y-12">
       <div className="flex flex-col justify-center flex-grow space-y-8">
@@ -88,7 +93,7 @@ export function AccountVerificationFormStep1PreConsent() {
 
         {/* ACTIONS */}
         <div className="w-full mx-auto space-y-2 sm:w-64">
-          <Button variant="bold" block loading={submitting} disabled={submitting} onClick={(() => { goToConsent(); setSubmitting(true)})} data-cy="current-step">
+          <Button variant="bold" block loading={submitting} disabled={submitting} onClick={onContinue} data-cy="current-step">
             Continue
           </Button>
         </div>

@@ -46,12 +46,3 @@
     transform: scale3d(1.1, 1.1, 1);
   }
 }
-
-.input {
-  min-width: 280px
-}
-
-.label {
-  top: 0.4rem;
-  left: 0;
-}

@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useTernaryState } from '../../utils/useTernaryState';
+import { PlanetIllustrations } from '../PlanetIllustrations';
 import { StepLogo } from './StepLogo';
 import { AccountVerificationFormStep0SignUp } from './AccountVerificationFormStep0SignUp';
 import { AccountVerificationFormStep1PreConsent } from './AccountVerificationFormStep1PreConsent';
@@ -31,14 +32,6 @@ export function AccountVerificationForm() {
 
   return (
     <div className="flex flex-col justify-center min-h-screen sm:bg-gradient-to-tr from-primary-bold to-primary-accent">
-      {/* PROGRESS BAR */}
-      {/* Delightful indication of the progress the user has made, to be 
-      displayed in conjunction with a Step Count */}
-
-      {/* STEP COUNT */}
-      {/* Helps the user feel like they have an overview of their progress, 
-      indicating how long it's going to take, and how many steps are left. */}
- 
 
       {/* FORM STEPS COMPONENT */}
       <div className="z-10 px-8 pb-24 mx-auto text-center sm:px-64 sm:pb-16 space-y-6 sm:space-y-8 sm:bg-neutral-subtle-alternate/50 rounded-2xl backdrop-opacity-60">
@@ -63,11 +56,6 @@ export function AccountVerificationForm() {
         </div>
       ) : null}
 
-      {/* BANK CONNECTION ILLUSTRATION */}
-      {/* For purely decorative purposes, an illustrations brings some delight 
-      to your application, subtly using the brand colours whilst not taking 
-      all the attention from the user. */}
-
       {/* CANCELLATION MODAL */}
       <AccountVerificationFormCancellationModal
         isOpen={isCancellationModalOpen}
@@ -75,20 +63,7 @@ export function AccountVerificationForm() {
         onConfirm={cancel}
         cancelling={cancelling}
       />
-      <div className="absolute w-full h-screen">
-          <div className="absolute hidden w-[243px] h-[243px] top-16 left-48 sm:block">
-            <img src="/planet-top-left.svg" alt="planet1" />
-          </div>
-          <div className="absolute right-0 hidden sm:w-[297px] sm:h-[347px] sm:-top-4 sm:right-0 w-[227px] h-[257px] sm:block">
-            <img src="/planet-top-right.svg" alt="planet2"/>
-          </div>
-          <div className="absolute hidden sm:w-[500px] sm:h-[500px] sm:bottom-12 sm:left-0 w-[200px] h-[200px] bottom-4 -left-16 sm:block">
-            <img src="/planet-bottom-left.svg" alt="planet3"/>
-          </div>
-          <div className="absolute hidden w-[256px] h-[256px] bottom-28 right-48 -rotate-[15deg] sm:block">
-            <img src="/planet-bottom-right.svg" alt="planet3"/>
-          </div>
-        </div>
+      <PlanetIllustrations hiddenOnMobile={true} />
     </div>
   );
 }

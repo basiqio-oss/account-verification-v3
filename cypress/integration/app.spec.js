@@ -30,14 +30,12 @@ describe('Account verification form', () => {
   it('Completes step 1 - PreConsent', () => {
     // Check the step number
     cy.get('[data-cy="current-step"]').contains('Continue');
-    // Open the learn more modal
-    //cy.contains('Learn more').click(); we don't have it anymore
     // Proceed to the next step
     cy.contains('Continue').click();
   });
 
   it('Completes redirect', () => {
     // Check the website has redirected
-    //cy.url().should('contain', 'consent.basiq.io');
+    //cy.url().should('contain', 'consent.basiq.io'); // uncomment this only in local since this needs the BASIQ API KEY
   });
 });
