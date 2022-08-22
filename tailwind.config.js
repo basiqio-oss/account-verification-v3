@@ -17,13 +17,15 @@ module.exports = {
         subtle: '#F1F0FF', // <Button variant="subtle"/> bg, and radio options e.g.
         'subtle-darker': '#E8E5FF', // <Button variant="subtle"/> :hover bg
         'subtle-darkest': '#DEDBFF', // <Button variant="subtle"/> :active bg
+        'subtle-accent': '#E0EAFF',
 
         // Bold
-        bold: '#4737FF', // <Button variant="bold"/> bg, and primary-bold -> primary-accent bg gradients e.g.
+        bold: '#4A56E2', // <Button variant="bold"/> bg, and primary-bold -> primary-accent bg gradients e.g.
         'bold-darker': '#1400FE', // Links (darker to provide more contrast)
 
         // Accent
-        accent: '#9C4EFF', // primary-bold to primary-accent bg gradient e.g.
+        accent: '#1525DE', // primary-bold to primary-accent bg gradient e.g.
+        'input-accent': 'rgba(231, 239, 255, 0.61)'
       },
 
       // Secondary brand colours
@@ -47,6 +49,7 @@ module.exports = {
       neutral: {
         subtle: '#F5F8F9', // subtle backgrounds to contrast with default white bg e.g.
         'subtle-darker': '#EBEEEF', // disabled bg colour e.g.
+        'subtle-alternate': '#FEFEFE80',
         dim: '#DEE4E7', // border, divide colour
         'dim-darker': '#BECBD0', // form input border, radio circles e.g.
         muted: '#7E888E', // muted icons, e.g. in <SearchInput />

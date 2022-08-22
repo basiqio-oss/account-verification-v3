@@ -1,17 +1,15 @@
 export function TextField({ id, label, type = 'text', error, ...props }) {
   return (
-    <div className="space-y-2">
-      <label htmlFor={id} className="block text-sm font-medium leading-none text-black">
-        {label}
-      </label>
+    <div className="relative ">
       <input
         type={type}
-        className={`w-full h-12 px-3 bg-white placeholder-neutral-muted text-black text-base outline-none rounded-lg border  focus:border-primary-bold focus:ring-2 focus:ring-primary-bold focus:ring-opacity-30 ring-offset-1 ring-offset-transparent ${
-          error ? 'border-critical-bold' : 'border-neutral-dim-darker'
-        }`}
+        className={`appearance-none rounded h-[4rem] w-full px-3 pt-5 focus focus:border-indigo-600 focus:outline-none active:outline-none active:border-indigo-600 bg-primary-input-accent text-primary-bold font-Inter font-bold`}
         id={id}
         {...props}
       />
+      <label htmlFor={id} className="absolute left-0 pt-2 pl-3 mb-0 text-xs text-gray-400 label leading-tighter text-primary-bold font-Inter">
+        {label}
+      </label>
       {error && <span className="block text-sm text-critical-bold-darker">{error}</span>}
     </div>
   );

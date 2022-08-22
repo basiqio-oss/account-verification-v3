@@ -16,7 +16,7 @@ export function AccountVerificationFormStep3LoadingSteps() {
   useEffect(() => {
     const newJobId = new URLSearchParams(window.location.search).get("jobId");
     setJobId(newJobId);
-  }, [])
+  }, [setJobId])
 
   return (
     <div className="flex flex-col space-y-10 sm:space-y-12">
