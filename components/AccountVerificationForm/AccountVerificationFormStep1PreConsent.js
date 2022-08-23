@@ -69,7 +69,7 @@ export function AccountVerificationFormStep1PreConsent() {
           <li className="flex items-center px-4 py-3 rounded-b-lg sm:py-6 sm:px-6 space-x-4 bg-primary-subtle-accent">
             {/* Icon: credit-card (outline) */}
             <div className="sm:ml-4">
-                <img src="/wallet.svg" alt="key" className="h-6 sm:h-5"/>
+                <img src="/wallet-opaque.svg" alt="key" className="h-6 sm:h-5"/>
               </div>
             <div className="flex flex-grow text-sm text-primary-bold sm:!ml-8 !ml-8 !pr-8">
               We cannot make transactions on your behalf

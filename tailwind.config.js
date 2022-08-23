@@ -44,6 +44,12 @@ module.exports = {
       current: 'currentColor', // svgs to be able to grab the text-{color} as stroke- or fill colour
       black: '#000217', // default text colour
       white: '#FFFFFF', // default bg colour of the /account-verification flow, <Button variant="inverted"/> e.g.
+      header: '#FEFEFE', // header bg colour of the /personal-finance flow
+      footer: '#4A56E2', // footer bg colour of the /personal-finance flow
+      menu: '#FDFDFD', // menu bg colour of the /personal-finance flow
+      blue: '#4A56E2', // text colour of the /personal-finance flow
+      'border-color': 'rgba(231, 239, 255, 0.61)',
+      overlay: 'rgba(80, 80, 80, 0.2)',
 
       // Neutral UI colours
       neutral: {
@@ -85,9 +91,24 @@ module.exports = {
       sans: ['Inter', ...defaultTheme.fontFamily.sans],
     },
 
+    fontSize: {
+      '2xl2': ['24px', '29px'],
+      'sm2': ['14px', '17px'],
+      'base2': ['16px', '19px']
+    },
+
     extend: {
       animation: {
         'ping-slow': 'pingSlow 2s cubic-bezier(0, 0, 0.2, 1) infinite',
+      },
+      boxShadow: {
+        'shead': '0px 0px 20px rgba(0, 0, 0, 0.1)',
+        'smenu': '0px 4px 4px rgba(0, 0, 0, 0.1)'
+      },
+      height: {
+       '40': '10rem',
+       '80': '20rem',
+       '520': '136rem'
       },
       keyframes: {
         pingSlow: {
@@ -97,6 +118,10 @@ module.exports = {
           },
         },
       },
+      width: {
+        '18': '4.5rem',
+        '116': '29rem'
+      }
     },
   },
   plugins: [],
