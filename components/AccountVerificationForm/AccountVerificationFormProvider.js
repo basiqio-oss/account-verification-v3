@@ -102,12 +102,13 @@ export function AccountVerificationFormProvider({ children }) {
     try {
       // Delete user at end of process when not in prod to clean up test data
       // You can also enable this for production if you do not wish to maintain the user bucket or connection e.g. for a once off check 
-      if (process.env.NODE_ENV !== 'production') {
-        await deleteUser()
-      }
+      // TODO: kerimcem - This will be opened when personal finance app is completed fully
+      // if (process.env.NODE_ENV !== 'production') {
+      //   await deleteUser()
+      // }
       setHasCompletedForm(true);
       sessionStorage.clear()
-      router.push('/');
+      router.push('/personal-finance');
     } catch {
       // If something went wrong while deleting the basiq connection, we send the user to the home page via a full page refresh so all state is reset
       window.location = window.location.origin;
