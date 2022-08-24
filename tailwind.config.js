@@ -51,6 +51,7 @@ module.exports = {
       'border-color': 'rgba(231, 239, 255, 0.61)',
       overlay: 'rgba(80, 80, 80, 0.2)',
       'green-link': '#24CCA7',
+      'mobile-border-color': '#E0EAFF',
 
       // Neutral UI colours
       neutral: {
@@ -95,12 +96,16 @@ module.exports = {
     fontSize: {
       '2xl2': ['24px', '29px'],
       'sm2': ['14px', '17px'],
+      'sm3': ['15px', '18.15px'],
       'base2': ['16px', '19px']
     },
 
     extend: {
       animation: {
         'ping-slow': 'pingSlow 2s cubic-bezier(0, 0, 0.2, 1) infinite',
+      },
+      backgroundImage: {
+        'mobile-main': 'linear-gradient(180deg, #FEFEFE 0%, #F5F5F5 100%)',
       },
       boxShadow: {
         'shead': '0px 0px 20px rgba(0, 0, 0, 0.1)',
