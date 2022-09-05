@@ -1,55 +1,44 @@
+import React,{useEffect,useState} from 'react';
 import { Transaction } from '../components/TransactionsPage';
 import { SEO } from '../components/SEO';
+import axios from 'axios';
+import { Menu } from '../components/Menu';
+import { useToggleState } from '../utils/useToggleState';
 
 export default function PersonalFinance() {
-  const temp = [
-    {
-      businessName: 'Business 1',
-      transactionDate: 'at 11:11',
-      amount: '121',
-    },
-    {
-      businessName: 'Business 2',
-      transactionDate: 'at 22:22',
-      amount: '122',
-    },
-    {
-      businessName: 'Business 3',
-      transactionDate: 'at 33:33',
-      amount: '123',
-    },
-    {
-      businessName: 'Business 4',
-      transactionDate: 'at 44:44',
-      amount: '124',
-    },
-    {
-      businessName: 'Business 5',
-      transactionDate: 'at 55:55',
-      amount: '125',
-    },
-    {
-      businessName: 'Business 6',
-      transactionDate: 'at 66:66',
-      amount: '126',
-    },
-    {
-      businessName: 'Business 7',
-      transactionDate: 'at 77:77',
-      amount: '127',
-    },
-    {
-      businessName: 'Business 8',
-      transactionDate: 'at 88:88',
-      amount: '128',
-    },
-  ];
+  const [data, setData] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [open, setOpen] = useToggleState(false);
+  
+const getData = () => {
+  setLoading(true)
+const userId = sessionStorage.getItem("userId")
+axios
+  .get(`/api/transactions`,{ params: {  userId } }) 
+  .then(function (response) {
+    setLoading(false)
+    console.log(response.data);
+    setData(response.data)
+  })
+  .catch(function (error) {
+    setLoading(false)
+    console.warn(error);
+    setData([])
+  });
+  
+}
+  useEffect(() => {
+    getData()
+  }, [])
+  
+
+  
   return (
-    <>
-      <SEO title="Personal Transactions" />
-      <main className="text-black bg-header">
-        <Transaction data={temp} />
-      </main>
-    </>
+    <div className=''>
+      <SEO title="Personal Transactions b-1" />
+      
+      {/* TODO: burası eklenecek  <Menu open={open} setMenuOpen={setOpen} selected="Transactions"></Menu>   */}
+        <Transaction data={data} loading={loading} /> 
+    </div>
   )
 }

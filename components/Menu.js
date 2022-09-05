@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-export function Menu({ open, setMenuOpen }) {
-  const [selectedMenuItem, setSelectedMenuItem] = useState("Home");
+export function Menu({ open, setMenuOpen,selected="" }) {
+  const [selectedMenuItem, setSelectedMenuItem] = useState(selected) || "Home";
 
   function onMenuItemClick(e) {
     setSelectedMenuItem(e.menuItemTitle);
@@ -44,7 +44,7 @@ export function Menu({ open, setMenuOpen }) {
         <div className="flex mt-3 mb-3">
           {MOBILE_MENU_ITEMS.map((m, i) => {
             return (
-              <div key={`menu-item-${i}`} className="flex justify-center w-1/4">
+              <div key={`menu-item-${i}`} className="flex justify-center w-1/4" onClick={()=> m?.href ? window.location.href = `/${m?.href}`:"" }>
                 <img className="fixed w-5 h-5 mt-3" onClick={e => onMenuItemClick({ menuItemTitle: m.title, ...e })}
                   src={`${selectedMenuItem === m.title ? m.selectedImage : m.image}`} alt={`${m.title}`} />
                 {selectedMenuItem === m.title &&
@@ -63,7 +63,7 @@ export const MOBILE_MENU_ITEMS = [
   { title: "Home", image: "/home.svg", selectedImage: "/home-white.svg" },
   { title: "Work", image: "/work.svg", selectedImage: "/work-white.svg" },
   { title: "Chart", image: "/chart.svg", selectedImage: "/chart-white.svg" },
-  { title: 'Upload', image: "/upload.svg", selectedImage: "/upload-white.svg" }
+  { title: 'Upload', image: "/upload.svg", selectedImage: "/upload-white.svg",href:"personal-transactions" }
 ];
 
 export const DESKTOP_MENU_ITEMS = [

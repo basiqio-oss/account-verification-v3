@@ -107,7 +107,7 @@ export function AccountVerificationFormProvider({ children }) {
       //   await deleteUser()
       // }
       setHasCompletedForm(true);
-      sessionStorage.clear()
+      //sessionStorage.clear()
       router.push('/personal-finance');
     } catch {
       // If something went wrong while deleting the basiq connection, we send the user to the home page via a full page refresh so all state is reset

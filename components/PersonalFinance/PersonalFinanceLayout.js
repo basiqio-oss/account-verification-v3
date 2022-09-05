@@ -11,7 +11,7 @@ export function PersonalFinanceLayout() {
       <div className="relative h-screen">
         <PersonalFinanceHeader isMenuOpen={open} menuIconClick={setOpen}></PersonalFinanceHeader>
         <div className="mt-36 bg-mobile-main sm:hidden"></div>
-        <Menu open={open} setMenuOpen={setOpen}></Menu>
+        <Menu open={open} setMenuOpen={setOpen} selected={"Home"}></Menu>
         <div className="z-0 flex-col hidden w-full h-full bg-menu mt-[9.5rem] sm:flex">
           <div className="hidden h-[136rem] sm:block"></div>
           <PersonalFinanceFooter></PersonalFinanceFooter>

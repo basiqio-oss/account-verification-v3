@@ -3,11 +3,13 @@ const { getBasiqAuthorizationHeader } = require('../../serverAuthentication');
 
 
   
-export default async function transactions(req, res) {
+export default async function transactionInfo(req, res) {
   const { userId } = req.query;
+  const { transactionId } = req.query;
+  console.log(transactionId);
   try {
     const { data } = await axios.get(
-      `https://au-api.basiq.io/users/${userId}/transactions`,
+      `https://au-api.basiq.io/users/${userId}/transactions/${transactionId}`,
       {
         headers: {
           Authorization: await getBasiqAuthorizationHeader(),
