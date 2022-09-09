@@ -1,6 +1,5 @@
-import React,{useState, useEffect} from 'react';
+import React,{useState} from 'react';
 import { TransactionInfo } from './transactions-info';
-import axios from 'axios';
 
 export function TransactionCard({data={}}) {
   const [isOpen, setisOpen] = useState(false);

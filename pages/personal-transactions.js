@@ -1,14 +1,12 @@
 import React,{useEffect,useState} from 'react';
-import { Transaction } from '../components/TransactionsPage';
+import { Transaction } from '../components/page/PersonalTransactionLayout';
 import { SEO } from '../components/SEO';
 import axios from 'axios';
-import { Menu } from '../components/Menu';
 import { useToggleState } from '../utils/useToggleState';
 
 export default function PersonalFinance() {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
-  const [open, setOpen] = useToggleState(false);
   
 const getData = () => {
   setLoading(true)

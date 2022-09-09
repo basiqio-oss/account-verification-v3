@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Modal, ModalTitle } from '../../components/Modal';
-import { Dialog, Transition } from '@headlessui/react';
-import {Button} from '../../components/Button'
+import React, { useEffect } from 'react';
+import { Dialog } from '@headlessui/react';
+import {Button} from '../Button'
 import axios from 'axios';
 
 export function TransactionInfo({ isOpen = '', onClose = {},data={} }) {

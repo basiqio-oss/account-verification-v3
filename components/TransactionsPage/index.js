@@ -1,20 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import { TransactionCard } from './transaction-card';
 import { LoadingSpinner } from '../LoadingSpinner';
+import axios from 'axios';
 
-export function Transaction({ data = [], loading = '' }) {
+export function Transaction( ) {
   const [transaction, setTransaction] = useState([]);
-  const [isOpen, setisOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+ 
+  const getData = () => {
+    setLoading(true)
+  const userId = sessionStorage.getItem("userId")
+  axios
+    .get(`/api/transactions`,{ params: {  userId } }) 
+    .then(function (response) {
+      setLoading(false)
+      console.log(response.data);
+      setTransaction(response.data)
+    })
+    .catch(function (error) {
+      setLoading(false)
+      console.warn(error);
+      setTransaction([])
+    });
+    
+  }
+    useEffect(() => {
+      getData()
+    }, [])
  
 
-  useEffect(() => {
-    console.log('test', new Date('2022-09-07T00:00:00Z') - new Date('2022-09-05T00:00:00Z'));
-
-    setTransaction(data);
-  }, [data]);
-
   return (
-    <div>
+    <>
       <div className="grid grid-rows-3 grid-cols-12 h-24 mb-11">
         <div className="row-span-3 col-span-9 sticky top-0 text-[#4737FF] self-center pl-6 font-semibold text-[1.875rem] ">
           Transactions
@@ -40,7 +56,7 @@ export function Transaction({ data = [], loading = '' }) {
         {transaction?.length > 0 ? (
           transaction.map((item, index) => {
             return (
-              <div key={index} className="pl-3 pr-3 mb-1">
+              <div key={index} className=" mb-1">
                 <TransactionCard data={item} />
               </div>
             );
@@ -51,7 +67,7 @@ export function Transaction({ data = [], loading = '' }) {
           </div>
         }
       </div>
-    </div>
+    </>
   );
 }
 
