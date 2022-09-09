@@ -1,4 +1,12 @@
+import { useAccountVerificationForm } from '../AccountVerificationForm/AccountVerificationFormProvider';
+
 export function PersonalFinanceHeader({ isMenuOpen, menuIconClick }) {
+  const { resetForNewAccount } = useAccountVerificationForm();
+
+  function onAddAccountClick() {
+    resetForNewAccount();
+  }
+
   return (
     <div className="fixed top-0 left-0 right-0 z-30 bg-header shadow-shead">
       <div className="flex justify-between mt-4 ml-7 h-11 sm:hidden">
@@ -17,7 +25,7 @@ export function PersonalFinanceHeader({ isMenuOpen, menuIconClick }) {
         </div>
         <div className="flex items-center w-1/4">
           <div className="mr-6">
-            <img className="w-16 h-14" src='/add-account.svg' alt="Add Account" />
+            <img className="w-16 h-14" src='/add-account.svg' alt="Add Account" onClick={onAddAccountClick} />
           </div>
           <div>
             <img className="w-16 h-14" src='/view-profile.svg' alt="View Profile" />
@@ -29,7 +37,7 @@ export function PersonalFinanceHeader({ isMenuOpen, menuIconClick }) {
           <img className="w-12 h-12" src='/view-profile.svg' alt="View Profile" />
         </div>
         <div>
-          <img className="w-12 h-12" src='/add-account.svg' alt="Add Account" />
+          <img className="w-12 h-12" src='/add-account.svg' alt="Add Account" onClick={onAddAccountClick} />
         </div>
       </div>
     </div>

@@ -33,6 +33,7 @@ export function AccountVerificationFormStep0SignUp() {
         setSubmitting(false);
         updateAccountVerificationFormState({ user: res.data })
         sessionStorage.setItem("userId", res.data.id)
+        sessionStorage.setItem("email", formState.values.email)
         goForward()
       })
       .catch(error => {

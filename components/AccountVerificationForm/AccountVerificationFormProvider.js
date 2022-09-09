@@ -77,6 +77,32 @@ export function AccountVerificationFormProvider({ children }) {
     sessionStorage.clear()
   }
 
+  async function resetStateForNewAccount() {
+    const email = sessionStorage.getItem("email");
+
+    await deleteBasiqConnection();
+
+    setAccountVerificationFormState(initialAccountVerificationFormState);
+    setCurrentStep(1);
+    setCancelling(false);
+    setHasCompletedForm(false);
+    sessionStorage.clear();
+
+    axios
+      .post('/api/create-user', { email: email })
+      .then( async res => {
+        updateAccountVerificationFormState({ user: res.data })
+
+        sessionStorage.setItem("userId", res.data.id)
+        sessionStorage.setItem("email", email)
+
+        router.push('/account-verification');
+      })
+      .catch(error => {
+        console.log("Error: ", error);
+    });
+  }
+
   // State for managing cancelling the account verification form
   const [cancelling, setCancelling] = useState(false);
   async function cancel() {
@@ -107,7 +133,7 @@ export function AccountVerificationFormProvider({ children }) {
       //   await deleteUser()
       // }
       setHasCompletedForm(true);
-      sessionStorage.clear()
+      //sessionStorage.clear()
       router.push('/personal-finance');
     } catch {
       // If something went wrong while deleting the basiq connection, we send the user to the home page via a full page refresh so all state is reset
@@ -137,6 +163,7 @@ export function AccountVerificationFormProvider({ children }) {
     basiqConnection,
     createBasiqConnection,
     reset: resetState,
+    resetForNewAccount: resetStateForNewAccount,
     hasCompletedForm,
     goToConsent,
     deleteUser,
