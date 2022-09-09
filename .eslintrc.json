@@ -9,6 +9,8 @@
     "no-undef": "error",
     "no-redeclare": "error",
     "import/order": ["error", { "newlines-between": "never" }],
-    "@next/next/no-img-element": "off"
+    "@next/next/no-img-element": "off",
+    "react/no-unescaped-entities": "off",
+    "@next/next/no-page-custom-font": "off"
   }
 }

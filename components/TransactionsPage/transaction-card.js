@@ -27,7 +27,7 @@ export function TransactionCard({data={}}) {
         </div>
         <div className="row-span-1 col-span-7 text-sm flex items-center"> at {formatter(data?.postDate)} </div>
       </div>
-      <TransactionInfo data={data} isOpen={isOpen} onClose={closeModal} />
+     {isOpen && <TransactionInfo data={data} isOpen={isOpen} onClose={closeModal} />}
     </div>
   );
 }

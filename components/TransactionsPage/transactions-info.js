@@ -36,9 +36,9 @@ axios
    	}
    }
 
-   useEffect(() => {
+   useEffect(() => { 
      if(isOpen) getInfo()
-   }, [isOpen])
+   }, [])
 
 
   return (

@@ -3,7 +3,6 @@ import { Menu } from '../Menu';
 import { useToggleState } from '../../utils/useToggleState'; 
 import {SEO} from '../SEO'
 import { PersonalFinanceFooter } from '../PersonalFinance/PersonalFinanceFooter';
-import { PersonalFinanceHeader } from '../PersonalFinance/PersonalFinanceHeader';
 // import { PersonalFinanceLayout } from './TransactionsPage/index';
 
 export default function MainLayout() {
