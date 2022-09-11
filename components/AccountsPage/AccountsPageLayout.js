@@ -69,13 +69,21 @@ export function AccountsPageLayout() {
       <div className="relative h-screen">
         <AccountsPageHeader isMenuOpen={open} menuIconClick={setOpen}></AccountsPageHeader>
         <div className="mt-36 bg-mobile-main sm:hidden">
-          <AccountsType accounts={savingAccounts} accountsType="Saving Accounts" />
+          <AccountsType accounts={savingAccounts} accountsType="Savings accounts" />
           <AccountsType accounts={loans} accountsType="Loans" />
-          <AccountsType accounts={creditCards} accountsType="Credit Cards" />
+          <AccountsType accounts={creditCards} accountsType="Credit cards" />
         </div>
         <Menu open={open} setMenuOpen={setOpen}></Menu>
         <div className="z-0 flex-col hidden w-full h-full bg-menu mt-[9.5rem] sm:flex">
-          <div className="hidden h-[136rem] sm:block"></div>
+          <div className="hidden h-[136rem] w-3/4 sm:m-auto pt-[60px] pb-[80px] sm:flex sm:flex-col ">
+            <div className="flex items-center pb-8 text-2xl2">
+              <img className="w-7 h-7  hidden sm:block mr-3" src="/wallet.svg" alt="My accounts" />
+              <div className="text-primary-bold font-semibold sm:text-[36px]">My accounts</div>
+            </div>
+            <AccountsType accounts={savingAccounts} accountsType="Savings accounts" />
+            <AccountsType accounts={loans} accountsType="Loans" />
+            <AccountsType accounts={creditCards} accountsType="Credit cards" />
+          </div>
           <AccountsPageFooter></AccountsPageFooter>
         </div>
       </div>
