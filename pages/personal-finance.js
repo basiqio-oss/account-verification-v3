@@ -1,12 +1,13 @@
-import React from 'react';
-import { SEO } from '../components/SEO'; 
-import MainLayout from '../components/page'
+import { PersonalFinanceLayout } from '../components/PersonalFinance';
+import { SEO } from '../components/SEO';
 
-export default function PersonalFinance() { 
+export default function PersonalFinance() {
   return (
     <>
-      <SEO title="Personal Finance" />  
-      <MainLayout></MainLayout>  
+      <SEO title="Personal Finance" />
+      <main className="text-black bg-header">
+        <PersonalFinanceLayout />
+      </main>
     </>
-  );
+  )
 }
