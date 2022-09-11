@@ -1,4 +1,19 @@
-export function PersonalFinanceHeader({ isMenuOpen, menuIconClick }) {
+import { useRouter } from 'next/router';
+import { useAccountVerificationForm } from '../AccountVerificationForm/AccountVerificationFormProvider';
+
+export function PersonalFinanceHeader({ isMenuOpen, menuIconClick, profileMenuOpenClick }) {
+  const { resetForNewAccount } = useAccountVerificationForm();
+
+  const router = useRouter();
+
+  function onAddAccountClick() {
+    resetForNewAccount();
+  }
+
+  function onViewProfileClick() {
+    router.push('/profile');
+  }
+
   return (
     <div className="fixed top-0 left-0 right-0 z-30 bg-header shadow-shead">
       <div className="flex justify-between mt-4 ml-7 h-11 sm:hidden">
@@ -17,19 +32,19 @@ export function PersonalFinanceHeader({ isMenuOpen, menuIconClick }) {
         </div>
         <div className="flex items-center w-1/4">
           <div className="mr-6">
-            <img className="w-16 h-14" src='/add-account.svg' alt="Add Account" />
+            <img className="w-16 h-14" src='/add-account.svg' alt="Add Account" onClick={onAddAccountClick} />
           </div>
           <div>
-            <img className="w-16 h-14" src='/view-profile.svg' alt="View Profile" />
+            <img className="w-16 h-14" src='/view-profile.svg' alt="View Profile" onClick={profileMenuOpenClick} />
           </div>
         </div>
       </div>
       <div className="flex justify-between h-20 ml-6 mr-6 sm:hidden">
         <div>
-          <img className="w-12 h-12" src='/view-profile.svg' alt="View Profile" />
+          <img className="w-12 h-12" src='/view-profile.svg' alt="View Profile" onClick={onViewProfileClick} />
         </div>
         <div>
-          <img className="w-12 h-12" src='/add-account.svg' alt="Add Account" />
+          <img className="w-12 h-12" src='/add-account.svg' alt="Add Account" onClick={onAddAccountClick} />
         </div>
       </div>
     </div>
