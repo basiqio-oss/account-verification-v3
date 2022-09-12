@@ -1,8 +1,6 @@
 const axios = require('axios');
 const { getBasiqAuthorizationHeader } = require('../../serverAuthentication');
 
-
-  
 export default async function transactions(req, res) {
   const { userId } = req.query;
   try {
