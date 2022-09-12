@@ -62,7 +62,7 @@ export function TransactionPage() {
                 Transactions
               </div>
             </div>
-            <div className="flex items-center justify-center pr-4 row-span-3 col-span-3">
+            <div className="flex items-center justify-center pr-4">
               <img className="w-7 h-7" src="/calendar.svg" alt="Calendar" />
             </div>
           </div>
@@ -70,8 +70,8 @@ export function TransactionPage() {
             {dateGroupedTransactions.length > 0 ? (
               dateGroupedTransactions.map((groupedItem, gIndex) => {
                 return (
-                  <>
-                    <div key={gIndex} className='pt-6 pb-4 font-semibold text-sm2 text-blue bg-[#FEFEFE]'>
+                  <div key={'grouped-transaction-' + gIndex}>
+                    <div className='pt-6 pb-4 font-semibold text-sm2 text-blue bg-[#FEFEFE]'>
                       <div className='ml-5'>
                         {groupedItem[0]}
                       </div>
@@ -79,13 +79,13 @@ export function TransactionPage() {
                     {
                       groupedItem[1].map((transaction, tIndex) => {
                         return (
-                          <div key={tIndex} className="mb-0.5" onClick={(e) => onTransactionItemClick({ transactionDetail: transaction, ...e })}>
+                          <div key={'transaction-item-' + gIndex + '-' + tIndex} className="mb-0.5" onClick={(e) => onTransactionItemClick({ transactionDetail: transaction, ...e })}>
                             <TransactionItem item={transaction} />
                           </div>
                         )
                       })
                     }
-                  </>
+                  </div>
                 );
               })
             ) :
