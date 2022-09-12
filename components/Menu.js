@@ -1,19 +1,21 @@
 import { useState } from "react";
 
-export function Menu({ open, setMenuOpen, ...props }) { 
+export function Menu({ open, setMenuOpen, desktopMainMenuItems, mobileMainMenuItems, onMenuItemClick }) { 
   const [selectedMenuItem, setSelectedMenuItem] = useState("Home");
-  function onMenuItemClick(e) {
+
+  function onItemClick(e) {
     setSelectedMenuItem(e.menuItemTitle);
+    onMenuItemClick(e.selectedPageIndex);
   }
 
   return (
     <>
       <div className="hidden w-full sm:block">
-        {open && <div className={`sticky bottom-0 left-0 z-40 hidden top-[9.5rem] bg-menu shadow-smenu sm:block xl:w-1/4 sm:w-1/2`}>
+        {open && <div className={`fixed bottom-0 left-0 z-40 hidden top-[9.5rem] bg-menu shadow-smenu sm:block xl:w-1/4 sm:w-1/2`}>
           <div className="pt-12 ml-24 font-semibold h-5/6 text-2xl2 text-blue">
-            {DESKTOP_MENU_ITEMS.map((m, i) => {
+            {desktopMainMenuItems.map((m, i) => {
               return (
-                <div key={`menu-item-${i}`} className="flex items-center pb-14" onClick={()=> m?.page ? props.setPage(m?.page):"" }>
+                <div key={`menu-item-${i}`} className="flex items-center pb-14" onClick={e => onItemClick({ selectedPageIndex: m.pageIndex, ...e }) }>
                   <div><img className="w-6 h-6" src={`${m.image}`} alt={`${m.title}`} /></div>
                   <div className="ml-4">{m.title}</div>
                 </div>
@@ -41,10 +43,10 @@ export function Menu({ open, setMenuOpen, ...props }) {
       </div>
       <div className="fixed bottom-0 left-0 z-0 w-full border-2 border-solid rounded-none sm:hidden sm:p-6 md:p-8 bg-header text-mobile-border-color">
         <div className="flex mt-3 mb-3">
-          {MOBILE_MENU_ITEMS.map((m, i) => {
+          {mobileMainMenuItems.map((m, i) => {
             return (
-              <div key={`menu-item-${i}`} className="flex justify-center w-1/4" onClick={()=> m?.page ? props.setPage(m?.page):"" }>
-                <img className="fixed w-5 h-5 mt-3" onClick={e => onMenuItemClick({ menuItemTitle: m.title, ...e })}
+              <div key={`menu-item-${i}`} className="flex justify-center w-1/4">
+                <img className="fixed w-5 h-5 mt-3" onClick={e => onItemClick({ menuItemTitle: m.title, selectedPageIndex: m.pageIndex, ...e })}
                   src={`${selectedMenuItem === m.title ? m.selectedImage : m.image}`} alt={`${m.title}`} />
                 {selectedMenuItem === m.title &&
                   <img className="w-12 h-12" src="/selected-menu-item.svg" alt="Selected" />
@@ -57,17 +59,3 @@ export function Menu({ open, setMenuOpen, ...props }) {
     </>
   );
 }
-
-export const MOBILE_MENU_ITEMS = [
-  { title: "Home", image: "/home.svg", selectedImage: "/home-white.svg", page:"PersonalFinanceLayout" },
-  { title: "Work", image: "/work.svg", selectedImage: "/work-white.svg" },
-  { title: "Chart", image: "/chart.svg", selectedImage: "/chart-white.svg" },
-  { title: 'Upload', image: "/upload.svg", selectedImage: "/upload-white.svg",page:"PersonalTransactionLayout" }
-];
-
-export const DESKTOP_MENU_ITEMS = [
-  { title: "Home", image: "/home.svg" ,page:"PersonalFinanceLayout"},
-  { title: "My Accounts", image: "/wallet.svg" },
-  { title: "Income vs Expenses", image: "/activity.svg" },
-  { title: 'Transactions', image: "/swap.svg", page:"PersonalTransactionLayout" }
-];

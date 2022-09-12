@@ -1,12 +1,16 @@
-export function PersonalFinanceFooter({setPage}) {
+export function PersonalFinanceFooter({ menuItems, middleMenuItems, onMenuItemClick }) {
+  function onItemClick(selectedPageIndex) {
+    onMenuItemClick(selectedPageIndex);
+  }
+
   return (
-    <div className="absolute inset-x-0 bottom-0 left-0 hidden bg-footer sm:flex">
-      <div className="flex justify-around w-full mt-14 ">
+    <div className="bottom-0 left-0 right-0 flex hidden top-72 bg-footer sm:flex">
+      <div className="flex justify-around w-full mt-14 mb-14">
         <div className="flex justify-center w-2/5">
           <div className="w-1/2 text-2xl2 text-header">
-            {MAIN_MENU_ITEMS.map((m, i) => {
+            {menuItems.map((m, i) => {
               return (
-                <div key={`menu-item-${i}`} className="flex items-center pb-8" onClick={()=> m?.page ? setPage(m?.page):"" }>
+                <div key={`menu-item-${i}`} className="flex items-center pb-8" onClick={() => onItemClick(m.pageIndex)}>
                   <div><img className="w-5 h-5" src={`${m.image}`} alt={`${m.title}`} /></div>
                   <div className="ml-4 font-normal">{m.title}</div>
                 </div>
@@ -14,7 +18,7 @@ export function PersonalFinanceFooter({setPage}) {
             })}
           </div>
           <div className="text-2xl2 text-header">
-            {OTHER_MENU_ITEMS.map((m, i) => {
+            {middleMenuItems.map((m, i) => {
               return (
                 <div key={`menu-item-${i}`} className="flex items-center pb-8">
                   <div><img className="w-5 h-5" src={`${m.image}`} alt={`${m.title}`} /></div>
@@ -44,15 +48,3 @@ export function PersonalFinanceFooter({setPage}) {
     </div>
   );
 }
-
-export const MAIN_MENU_ITEMS = [
-  { title: "Home", image: "/home-white.svg",page:"PersonalFinanceLayout" },
-  { title: "My Accounts", image: "/wallet-white.svg" },
-  { title: "Income vs Expenses", image: "/activity-white.svg" },
-  { title: 'Transactions', image: "/swap-white.svg",page:"PersonalTransactionLayout"  }
-];
-
-export const OTHER_MENU_ITEMS = [
-  { title: "Profile settings", image: "/settings-white.svg" },
-  { title: "Add account", image: "/plus-white.svg" }
-];

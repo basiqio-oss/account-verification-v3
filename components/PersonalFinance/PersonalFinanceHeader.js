@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useAccountVerificationForm } from '../AccountVerificationForm/AccountVerificationFormProvider';
 
-export function PersonalFinanceHeader({ isMenuOpen, menuIconClick, profileMenuOpenClick }) {
+export function PersonalFinanceHeader({ isMenuOpen, menuIconClick, profileMenuOpenClick, showProfileLine }) {
   const { resetForNewAccount } = useAccountVerificationForm();
 
   const router = useRouter();
@@ -39,14 +39,14 @@ export function PersonalFinanceHeader({ isMenuOpen, menuIconClick, profileMenuOp
           </div>
         </div>
       </div>
-      <div className="flex justify-between h-20 ml-6 mr-6 sm:hidden">
+      {showProfileLine && <div className="flex justify-between h-20 ml-6 mr-6 sm:hidden">
         <div>
           <img className="w-12 h-12" src='/view-profile.svg' alt="View Profile" onClick={onViewProfileClick} />
         </div>
         <div>
           <img className="w-12 h-12" src='/add-account.svg' alt="Add Account" onClick={onAddAccountClick} />
         </div>
-      </div>
+      </div>}
     </div>
   );
 }

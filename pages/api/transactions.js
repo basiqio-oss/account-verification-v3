@@ -7,7 +7,7 @@ export default async function transactions(req, res) {
   const { userId } = req.query;
   try {
     const { data } = await axios.get(
-      `https://au-api.basiq.io/users/${userId}/transactions`,
+      `https://au-api.basiq.io/users/${userId}/transactions?limit=50`,
       {
         headers: {
           Authorization: await getBasiqAuthorizationHeader(),
