@@ -97,7 +97,8 @@ module.exports = {
       '2xl2': ['24px', '29px'],
       'sm2': ['14px', '17px'],
       'sm3': ['15px', '18.15px'],
-      'base2': ['16px', '19px']
+      'base2': ['16px', '19px'],
+      'xs': ['12px', '15px']
     },
 
     extend: {

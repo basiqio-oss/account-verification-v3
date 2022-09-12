@@ -58,7 +58,7 @@ export function ProfileLayout({ open, setMenuOpen }) {
 
   return (
     <>
-      <div className="relative h-screen">
+      <div className="relative">
         <div className="hidden w-full sm:block">
           {open &&
             <div className={`fixed bottom-0 right-0 z-40 hidden top-[9.5rem] bg-menu shadow-smenu sm:block xl:w-1/4 sm:w-1/2`}>
