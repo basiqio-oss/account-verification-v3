@@ -3,16 +3,18 @@ import axios from 'axios';
 import { LoadingSpinner } from '../LoadingSpinner';
 import { TransactionItem } from './TransactionItem';
 import { TransactionItemDetail } from './TransactionItemDetail';
+import { Calendar } from './Calendar';
 
 export function TransactionPage() {
   const [dateGroupedTransactions, setDateGroupedTransactions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
   const [selectedTransaction, setSelectedTransaction] = useState({});
+  const [open, setOpen] = useState(false);
 
   const getData = () => {
-    setLoading(true)
-    const userId = sessionStorage.getItem("userId")
+    setLoading(true);
+    const userId = sessionStorage.getItem('userId');
     axios
       .get(`/api/transactions`, { params: { userId } })
       .then(function (response) {
@@ -25,7 +27,7 @@ export function TransactionPage() {
             return r;
           }
         }, Object.create(null));
-
+        console.log(Object.entries(dateGroupedTransactions));
         setDateGroupedTransactions(Object.entries(dateGroupedTransactions));
       })
       .catch(function (error) {
@@ -33,37 +35,36 @@ export function TransactionPage() {
         setDateGroupedTransactions([]);
         setLoading(false);
       });
-  }
+  };
 
-  const onTransactionItemClick = (e) => {
+  const onTransactionItemClick = e => {
     setShowDetail(true);
     setSelectedTransaction(e.transactionDetail);
-  }
+  };
 
   const onCloseTransactionDetailClick = () => {
     setSelectedTransaction({});
     setShowDetail(false);
-  }
+  };
 
   useEffect(() => {
-    getData()
-  }, [])
+    getData();
+  }, []);
 
   return (
     <>
-      {!showDetail &&
+      {!showDetail && (
         <>
           <div className="flex justify-between mt-24 ml-6 mr-6 sm:mt-16 sm:ml-80 sm:mr-80">
             <div className="flex">
               <div className="hidden mr-4 sm:block">
                 <img className="w-6 h-6" src="/swap.svg" alt="Swap" />
               </div>
-              <div className="font-semibold text-2xl2 text-blue">
-                Transactions
-              </div>
+              <div className="font-semibold text-2xl2 text-blue">Transactions</div>
             </div>
             <div className="flex items-center justify-center pr-4">
-              <img className="w-7 h-7" src="/calendar.svg" alt="Calendar" />
+              <img className="w-7 h-7" src="/calendar.svg" alt="Calendar" onClick={()=>{setOpen(!open)}} />
+              <Calendar data={dateGroupedTransactions || []} open={open}/>
             </div>
           </div>
           <div className="mt-6 sm:ml-80 sm:mr-80 bg-[#FCFCFC]">
@@ -71,37 +72,39 @@ export function TransactionPage() {
               dateGroupedTransactions.map((groupedItem, gIndex) => {
                 return (
                   <div key={'grouped-transaction-' + gIndex}>
-                    <div className='pt-6 pb-4 font-semibold text-sm2 text-blue bg-[#FEFEFE]'>
-                      <div className='ml-5'>
-                        {groupedItem[0]}
-                      </div>
+                    <div className="pt-6 pb-4 font-semibold text-sm2 text-blue bg-[#FEFEFE]">
+                      <div className="ml-5">{groupedItem[0]}</div>
                     </div>
-                    {
-                      groupedItem[1].map((transaction, tIndex) => {
-                        return (
-                          <div key={'transaction-item-' + gIndex + '-' + tIndex} className="mb-0.5" onClick={(e) => onTransactionItemClick({ transactionDetail: transaction, ...e })}>
-                            <TransactionItem item={transaction} />
-                          </div>
-                        )
-                      })
-                    }
+                    {groupedItem[1].map((transaction, tIndex) => {
+                      return (
+                        <div
+                          key={'transaction-item-' + gIndex + '-' + tIndex}
+                          className="mb-0.5"
+                          onClick={e => onTransactionItemClick({ transactionDetail: transaction, ...e })}
+                        >
+                          <TransactionItem item={transaction} />
+                        </div>
+                      );
+                    })}
                   </div>
                 );
               })
-            ) :
+            ) : (
               <div className="flex justify-center">
-                <div className='mt-16'>
-                  {loading} {loading ? <LoadingSpinner /> : "Transactions not Found"}
+                <div className="mt-16">
+                  {loading} {loading ? <LoadingSpinner /> : 'Transactions not Found'}
                 </div>
               </div>
-            }
+            )}
           </div>
         </>
-      }
-      {showDetail &&
-        <TransactionItemDetail detail={selectedTransaction} closeTransactionDetailClick={onCloseTransactionDetailClick} />
-      }
+      )}
+      {showDetail && (
+        <TransactionItemDetail
+          detail={selectedTransaction}
+          closeTransactionDetailClick={onCloseTransactionDetailClick}
+        />
+      )}
     </>
   );
 }
-
