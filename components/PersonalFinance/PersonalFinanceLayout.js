@@ -4,6 +4,7 @@ import { PersonalFinanceFooter } from "./PersonalFinanceFooter";
 import { PersonalFinanceHeader } from './PersonalFinanceHeader';
 import { ProfileLayout } from './ProfileLayout';
 import { TransactionPage } from './TransactionPage';
+import MainSlider  from './MainSlider';
 
 export function PersonalFinanceLayout() {
   const [mainMenuOpen, setMainMenuOpen] = useState(false);
@@ -33,6 +34,12 @@ export function PersonalFinanceLayout() {
         <div>
           <PersonalFinanceHeader isMenuOpen={mainMenuOpen} showProfileLine={selectedPageIndex && selectedPageIndex === 1} menuIconClick={() => manageMenus(true)} profileMenuOpenClick={() => manageMenus(false)}
             selectedPageIndex={selectedPageIndex}></PersonalFinanceHeader>
+
+        </div>
+        <div className="flex justify-center pt-40 mb-36">
+          <div className="flex-1 ">
+            <MainSlider/>
+          </div>
         </div>
         <div className={`${selectedPageIndex && selectedPageIndex === 1 ? "mt-36" : ""} sm:mt-36 bg-mobile-main sm:hidden h-full`}>
           {selectedPageIndex &&

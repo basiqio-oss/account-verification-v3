@@ -1,0 +1,44 @@
+export function IncomeAndExpense() {
+  return (
+    <div className="ml-4 mr-4 sm:ml-0 md:ml-0 lg:ml-0">
+      <div
+        className='block p-3 max-w-sm sm:max-w-2xl bg-[#fbfbfb] rounded-2xl border-2 border-[#e0eaff] shadow-md sm:py-20 sm:px-10  sm:bg-[#F5F7F8]'>
+        <div className="flex flex-row">
+          <div className="sm:-mt-14 sm:-ml-6">
+            <img src="/slider/Rectangle%20123.svg" className="sm:w-[32px] sm:h-[32px]"/>
+          </div>
+          <div className="ml-2 text-sm2 leading-[17px] font-bold sm:-mt-14 sm:text-[26px] sm:leading-[31px]">
+            <span>Income vs Expenses</span>
+          </div>
+        </div>
+        <div className="flex justify-between mt-2 sm:rounded-2xl sm:border-2 sm:border-[#F5F5F5] sm:p-8 sm:bg-[#FEFEFE]">
+          <div className="flex flex-col">
+            <div>
+              <span className="text-[10px] sm:text-[12px] text-[#4A56E2] font-medium leading-[12px]">This month</span>
+            </div>
+            <div className="flex justify-between items-end">
+              <div>
+                <img src="/slider/Rectangle 110.svg"/>
+                <span className="text-[9px] sm:text-[11px] text-[#24CCA7] font-bold leading-[11px] mr-1">Income</span>
+              </div>
+              <div>
+                <img src="/slider/Rectangle 112.svg"/>
+                <span className="text-[9px] sm:text-[11px] text-[#4A56E2] font-bold leading-[11px]">Expense</span>
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col justify-between">
+            <div>
+              <p className="text-[#4A56E2] text-[10px] sm:text-[15px] leading-3 font-medium">Total Income:</p>
+              <span className="text-[16px] sm:text-[18px] bg-clip-text text-transparent bg-gradient-to-r from-[#4A56E2] to-[#24CCA7] text-2xl leading-[19px] font-bold">$2,318</span>
+            </div>
+            <div>
+              <p className="text-[#4A56E2] text-[10px] sm:text-[15px] leading-3 font-medium">Total Expense:</p>
+              <span className="text-[16px] sm:text-[18px] bg-clip-text text-transparent bg-gradient-to-r from-[#D96C6C] to-[#4A56E2] text-2xl leading-[19px] font-bold">$2,318</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
