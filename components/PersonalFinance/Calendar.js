@@ -15,7 +15,6 @@ export function Calendar({ data, open }) {
         return sum.toFixed(0)
       }
     });
-    // console.log(test);}
   }
   const sumNegativeAmount =(date) => {
     
@@ -29,7 +28,6 @@ export function Calendar({ data, open }) {
         return sum.toFixed(0)
       }
     });
-    // console.log(test);}
   }
   return (
     <DatePicker
@@ -47,7 +45,6 @@ export function Calendar({ data, open }) {
       superNextIcon={false}
       superPrevIcon={false}
       placeholder={false}
-      //nextIcon='#4A56E2'
       format="YYYY-MM-DD"
       dateRender={current => {
         const date = current.toISOString().split('T')[0];
@@ -66,64 +63,10 @@ export function Calendar({ data, open }) {
               </div>
              
         ) : (
-          <div className="ant-picker-cell-inner ant-picker-cell-in-view ant-picker-cell-inner selected-date" onClick={e => console.log(current.date())} style={{  color: '#4A56E2', width:"2.1rem",height:"3.3rem",borderRadius:8 }}>
+          <div className="ant-picker-cell-inner ant-picker-cell-in-view ant-picker-cell-inner selected-date" onClick={() => console.log(current.date())} style={{  color: '#4A56E2', width:"2.1rem",height:"3.3rem",borderRadius:8 }}>
             {current.date()}
           </div>
         );
-        //   <div>
-        //     ss
-        //     {data.map(item => {
-        //       if (current.toISOString().split('T')[0] === item[0]) {
-        //         const initalValue = 0;
-        //         const sumAmount = item[1].reduce(
-        //           (previousValue, currentValue) => previousValue + Number(currentValue.amount),
-        //           initalValue
-        //         );
-        //         console.log('sumAmount', sumAmount.toFixed(3));
-        //         return (
-        //             <div className="ant-picker-cell-inner" onClick={() => console.log(current.date())}>
-        //                 <div style={{fontSize:12, color: '#4A56E2', backgroundColor: '#E0EAff'}} >
-        //                     {current.date()}
-        //                     <div style={{fontSize: 9}}>{sumAmount.toFixed(0)} </div>
-        //                 </div>
-        //             </div>
-        //         )
-        //       }else {
-        //         return (
-        //         <div
-        //         className="ant-picker-cell-inner"
-        //         onClick={e => console.log(current.date())}
-        //         style={{ fontSize: 21 }}
-        //       >
-        //         {current.date()}s
-        //       </div>
-        //         )
-        //       }
-        //     })}
-        //   </div>
-
-        //    return current.toDate().toDateString() === date.toDateString() ? (
-        //      <div className="ant-picker-cell-inner" onClick={() => console.log(current.date())}>
-        //        <div
-        //          style={{
-        //            fontSize: 12,
-        //            color: '#4A56E2',
-        //            backgroundColor: '#E0EAFF',
-        //          }}
-        //        >
-        //          {current.date()}
-        //          <div style={{ fontSize: 9 }}>+4000$</div>
-        //        </div>
-        //      </div>
-        //    ) : (
-        //      <div
-        //        className="ant-picker-cell-inner"
-        //        onClick={e => console.log(current.date())}
-        //        style={{ fontSize: 21 }}
-        //      >
-        //        {current.date()}
-        //      </div>
-        //    );
       }}
     />
   );
