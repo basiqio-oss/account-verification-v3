@@ -7,6 +7,9 @@
   .ant-picker-header {
     color: #4A56E2 !important;
   }
+  .ant-picker-header > button {
+
+  }
   .ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner {
     background-color: #E0EAFF !important ; 
   }
