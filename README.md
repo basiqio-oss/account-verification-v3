@@ -1,7 +1,6 @@
-# Account verification v3.0 : Supporting Open Banking
-### Supporting Open Banking 
+# Account verification
 
-This starter kit takes a user through the account verification process using the Basiq API. This project has been to built with three main technologies:
+This application takes a user through the account verification process using the Basiq API. This project has been to built with three main technologies:
 
 1. [Basiq API](https://api.basiq.io)
    Basiq is a Consumer Data Right accredited API platform that provides the building blocks of financial services.
@@ -11,10 +10,6 @@ This starter kit takes a user through the account verification process using the
    A utility-first CSS framework that can be composed to build any design, directly in your markup.
 
 ## Getting started
-
-#### This Starter Kit specifically supports v3.0 of the API and the Open Banking flow
-
-:warning: Please ensure you have enabled Basiq v3.0 for your API key before using this Starter Kit. If you do not wish to use v3.0 then please check out the v2.0 Starter Kit [here](https://github.com/basiqio/account-verification). 
 
 ### 1. Use the template to create your own repository
 
@@ -32,8 +27,6 @@ cd account-verification
 ### 2. API key setup
 
 If you haven't already, [Sign-up](https://dashboard.basiq.io/login) to the Basiq API service and grab your API key for your application (via the [Developer Dashboard](https://dashboard.basiq.io/)).
-
-:warning: Don't forget to configure your dashboard appropriately - especially your redirect URL. Read more about that [here](https://api.basiq.io/docs/dash-configuration). 
 
 Once you have a Basiq API key, move the sample `.env.sample` file to `.env.local` and paste in your Basiq API key next to `BASIQ_API_KEY=`
 
