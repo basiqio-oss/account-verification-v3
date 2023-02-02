@@ -269,7 +269,7 @@ function useBasiqConnection({ currentStep, userId }) {
   // trigger a toast when the job finishes processing or an error occurres
   useEffect(() => {
     if (!jobId) return; // Make sure we only trigger the toast when you're on the step 3
-    if (asPath === '/account-verification') return;
+    if (asPath.includes('/account-verification')) return;
     if (error) {
       toast.error(error.message, {
         title: error.name,

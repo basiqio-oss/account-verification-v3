@@ -8,10 +8,10 @@ const { getBasiqAuthorizationHeader } = require('../../serverAuthentication');
  */
 
 export default async function accounts(req, res) {
-  const { userId } = req.query;
+  const { userId, institutionId } = req.query;
   try {
     const { data } = await axios.get(
-      `https://au-api.basiq.io/users/${userId}/accounts`,
+      `https://au-api.basiq.io/users/${userId}/accounts?filter=institution.id.eq('${institutionId}')`,
       {
         headers: {
           Authorization: await getBasiqAuthorizationHeader(),
