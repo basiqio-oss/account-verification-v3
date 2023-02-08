@@ -16,7 +16,7 @@ describe('Account verification form', () => {
     cy.route('https://au-api.basiq.io/**').as('basiqApi');
   });
 
-  it('Completes step 0 - SignUp', () => {
+  it('Completes Initial Test - SignUp', () => {
     // Start from the "/account-verification" page
     cy.visit('http://localhost:3000/account-verification');
     // Check the step number is 1
@@ -26,7 +26,7 @@ describe('Account verification form', () => {
     // Submit the form
     cy.get('button[type="submit"]').click();
   });
-
+/*
   it('Completes step 1 - PreConsent', () => {
     // Check the step number
     cy.get('[data-cy="current-step"]').contains('2');
@@ -38,9 +38,9 @@ describe('Account verification form', () => {
     cy.wait('@api');
   });
 
-/*
+
   None of these Tests are required in V3.0 
-  
+
   it('Completes step 2 - InstitutionPicker', () => {
     // Check the step number
     cy.get('[data-cy=current-step]').contains('3');
