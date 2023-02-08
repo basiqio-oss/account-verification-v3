@@ -38,6 +38,9 @@ describe('Account verification form', () => {
     cy.wait('@api');
   });
 
+/*
+  None of these Tests are required in V3.0 
+  
   it('Completes step 2 - InstitutionPicker', () => {
     // Check the step number
     cy.get('[data-cy=current-step]').contains('3');
@@ -81,4 +84,5 @@ describe('Account verification form', () => {
     // Make sure we have a button which shows "View verified account"
     cy.contains('View verified account').should('be.visible');
   });
+  */
 });
