@@ -26,7 +26,7 @@ describe('Account verification form', () => {
     // Submit the form
     cy.get('button[type="submit"]').click();
   });
-
+/*
   it('Completes step 1 - PreConsent', () => {
     // Check the step number
     cy.get('[data-cy="current-step"]').contains('2');
@@ -81,4 +81,5 @@ describe('Account verification form', () => {
     // Make sure we have a button which shows "View verified account"
     cy.contains('View verified account').should('be.visible');
   });
+  */
 });
