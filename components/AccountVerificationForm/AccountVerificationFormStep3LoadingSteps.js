@@ -15,6 +15,7 @@ export function AccountVerificationFormStep3LoadingSteps() {
 
   useEffect(() => {
     const newJobId = new URLSearchParams(window.location.search).get("jobId");
+    //console.log(newJobId); 
     setJobId(newJobId);
   }, [])
 

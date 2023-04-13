@@ -16,7 +16,7 @@ describe('Account verification form', () => {
     cy.route('https://au-api.basiq.io/**').as('basiqApi');
   });
 
-  it('Completes Initial Test - SignUp', () => {
+  it('Completes step 0 - SignUp', () => {
     // Start from the "/account-verification" page
     cy.visit('http://localhost:3000/account-verification');
     // Check the step number is 1
@@ -37,9 +37,6 @@ describe('Account verification form', () => {
     // Wait until the API call to `/api/institutions` has finished
     cy.wait('@api');
   });
-
-
-  None of these Tests are required in V3.0 
 
   it('Completes step 2 - InstitutionPicker', () => {
     // Check the step number
