@@ -19,6 +19,6 @@ jobs:
         env:
           BASIQ_API_KEY: ${{ secrets.BASIQ_API_KEY }}
         with:
-          build: yarn run build
-          start: yarn start
+          build: npm run build
+          start: npm run start
           wait-on: http://localhost:3000
