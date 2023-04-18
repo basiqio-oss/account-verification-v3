@@ -289,9 +289,8 @@ export function AccountVerificationForm() {
             </clipPath>
           </defs>
         </svg>
-
         <div style={{position: "absolute", bottom: "10px", right: "left"}}>
-          &#9888; <strong>This is a sample app.</strong> We have disabled connecting to live banks - you can connect to our sandbox institution Hooli using the test credentials found <a href="https://api.basiq.io/reference/testing">here</a>.
+          &#9888; <strong>This is a Demo app.</strong> 
         </div>
       </div>
 
