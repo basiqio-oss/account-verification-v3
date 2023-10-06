@@ -19,20 +19,20 @@ export async function getBasiqAuthorizationHeader() {
   return `Bearer ${token}`;
 }
 
-export async function getClientToken(userId) {
+async function getClientToken() {
   let token = getClientTokenFromLocalStorage();
   const refreshDate = getClientTokenRefreshDateFromLocalStorage() || 0;
 
-  if (!token || Date.now() - refreshDate > REFRESH_INTERVAL || userId) {
+  if (!token || Date.now() - refreshDate > REFRESH_INTERVAL) {
     // If we don't have a client token in memory or the token has expired, fetch a new one
-    token = await updateClientToken(userId);
+    token = await updateClientToken();
   }
 
   return token;
 }
 
-async function updateClientToken(userId) {
-  const token = await getNewClientToken(userId);
+async function updateClientToken() {
+  const token = await getNewClientToken();
   setClientTokenInLocalStorage(token);
 
   const refreshDate = Date.now();
@@ -41,8 +41,8 @@ async function updateClientToken(userId) {
   return token;
 }
 
-async function getNewClientToken(userId) {
-  const { data } = await axios.get('/api/client-token', { params: { userId } });
+async function getNewClientToken() {
+  const { data } = await axios.get('/api/client-token');
   return data;
 }
 

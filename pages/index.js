@@ -27,14 +27,13 @@ export default function Home() {
           <div className="space-y-4">
             {/* PRODUCT-COPY HEADING */}
             <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-              Start optimising <br />
-              your savings
+              Track your savings <br />
+              to help the environment
             </h1>
 
             {/* PRODUCT-COPY SHORT DESCRIPTION */}
             <p className="text-sm leading-relaxed text-white sm:text-base text-opacity-90">
-              Piper helps you track and optimise your savings. For every dollar saved you get 10% cashback into your
-              account.
+              Piper helps you track and optimise your savings. For every $100 spent we will plant a tree.
             </p>
           </div>
 

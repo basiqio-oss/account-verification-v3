@@ -7,9 +7,8 @@ const { getNewClientToken } = require('../../serverAuthentication');
  */
 
 export default async function clientToken(req, res) {
-  const { userId } = req.query;
   try {
-    const clientToken = await getNewClientToken(userId);
+    const clientToken = await getNewClientToken();
     res.status(200).json(clientToken);
   } catch (error) {
     res.status(400).json({ message: error.message });
