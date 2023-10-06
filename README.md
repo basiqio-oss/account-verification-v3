@@ -15,8 +15,6 @@ This application takes a user through the account verification process using the
 
 To get started, you will need click the "Use this template" button on the main page of the repo - this will generate a new repository.
 
-![template repository screenshot](docs/Group_2681.png)
-
 Then you will need to clone the repository you have just generated. 
 
 ```sh
