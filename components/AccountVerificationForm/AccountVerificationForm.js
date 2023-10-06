@@ -290,7 +290,7 @@ export function AccountVerificationForm() {
           </defs>
         </svg>
         <div style={{position: "absolute", bottom: "10px", right: "left"}}>
-          &#9888; <strong>This is a Demo app.</strong> 
+          &#9888; <strong>This is a demo app.</strong> 
         </div>
       </div>
 
