@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.4.2",
-    "axios": "^0.24.0",
+    "axios": "^1.6.0",
     "ms": "^2.1.3",
     "next": "latest",
     "qs": "^6.10.3",
