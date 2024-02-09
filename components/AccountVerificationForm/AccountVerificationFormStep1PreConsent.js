@@ -1,6 +1,5 @@
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { useTernaryState } from '../../utils/useTernaryState';
 import { Button } from '../Button';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
