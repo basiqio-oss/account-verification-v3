@@ -1,5 +1,8 @@
+
+import { useState } from 'react';
 import { useTernaryState } from '../../utils/useTernaryState';
 import { Button } from '../Button';
+import { LoadingSpinner } from '../../components/LoadingSpinner';
 import { AccountVerificationFormLearnMoreModal } from './AccountVerificationFormLearnMoreModal';
 import { StepLogo } from './StepLogo';
 import { StepHeading } from './StepHeading';
@@ -8,6 +11,7 @@ import { useAccountVerificationForm } from './AccountVerificationFormProvider';
 
 export function AccountVerificationFormStep1PreConsent() {
   const { goToConsent } = useAccountVerificationForm()
+  const [submitting, setSubmitting] = useState(false); // Initialize with true if needed
 
   // State for managing hiding/showing of the learn more model
   const [isLearnMoreModalOpen, openLearnMoreModal, closeLearnMoreModal] = useTernaryState(false);
@@ -169,8 +173,11 @@ export function AccountVerificationFormStep1PreConsent() {
 
         {/* ACTIONS */}
         <div className="space-y-2">
-          <Button variant="bold" block onClick={(() => goToConsent())}>
-            Continue
+         <Button variant="bold" loading={submitting} block onClick={() => {
+                setSubmitting(true); // Set submitting state to true
+                goToConsent(); // Call the goToConsent function
+            }}>
+             {submitting ? <LoadingSpinner /> : "Continue"}
           </Button>
 
           <Button variant="subtle" block onClick={openLearnMoreModal}>
