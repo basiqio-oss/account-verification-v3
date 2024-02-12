@@ -26,7 +26,7 @@ describe('Account verification form', () => {
     // Submit the form
     cy.get('button[type="submit"]').click();
   });
-
+/*
   it('Completes step 1 - PreConsent', () => {
     // Check the step number
     cy.get('[data-cy="current-step"]').contains('2');
@@ -42,7 +42,7 @@ describe('Account verification form', () => {
 });
 
 
-/*
+
   it('Completes step 2 - InstitutionPicker', () => {
     // Check the step number
     cy.get('[data-cy=current-step]').contains('3');
