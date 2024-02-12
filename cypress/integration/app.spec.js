@@ -32,13 +32,15 @@ describe('Account verification form', () => {
     cy.get('[data-cy="current-step"]').contains('2');
     // Open the learn more modal
     cy.contains('Learn more').click();
-    // Stub the network request to consent.basiq.io
-    cy.intercept('GET', 'https://consent.basiq.io/**').as('consentRedirect');
-    // Proceed to the next step, assuming this triggers the redirect
-    cy.contains('Securely connect my account').click();
-    // Wait for the network request to complete
-    cy.wait('@consentRedirect').its('response.statusCode').should('eq', 200);
-  });
+    // Intercept the click event on the button
+    cy.get('button[type="button"]').contains('Securely connect my account').click({ force: true });
+    // Assert that the redirect URL matches the expected one
+    cy.window().then(win => {
+        const expectedRedirectUrl = 'https://consent.basiq.io/home';
+        expect(win.location.href).to.eq(expectedRedirectUrl);
+    });
+});
+
 
 /*
   it('Completes step 2 - InstitutionPicker', () => {
