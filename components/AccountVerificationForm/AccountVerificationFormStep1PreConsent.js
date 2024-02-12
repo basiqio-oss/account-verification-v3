@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useTernaryState } from '../../utils/useTernaryState';
 import { Button } from '../Button';

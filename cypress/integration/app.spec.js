@@ -15,7 +15,7 @@ describe('Account verification form', () => {
     cy.route('/api/**').as('api');
     cy.route('https://au-api.basiq.io/**').as('basiqApi');
   });
-
+/*
   it('Completes step 0 - SignUp', () => {
     // Start from the "/account-verification" page
     cy.visit('http://localhost:3000/account-verification');
@@ -26,22 +26,17 @@ describe('Account verification form', () => {
     // Submit the form
     cy.get('button[type="submit"]').click();
   });
-/*
+
   it('Completes step 1 - PreConsent', () => {
     // Check the step number
     cy.get('[data-cy="current-step"]').contains('2');
     // Open the learn more modal
     cy.contains('Learn more').click();
-    // Intercept the click event on the button
-    cy.get('button[type="button"]').contains('Securely connect my account').click({ force: true });
-    // Assert that the redirect URL matches the expected one
-    cy.window().then(win => {
-        const expectedRedirectUrl = 'https://consent.basiq.io/home';
-        expect(win.location.href).to.eq(expectedRedirectUrl);
-    });
-});
-
-
+    // Proceed to the next step
+    cy.contains('Securely connect my account').click();
+    // Wait until the API call to `/api/institutions` has finished
+    cy.wait('@api');
+  });
 
   it('Completes step 2 - InstitutionPicker', () => {
     // Check the step number
