@@ -26,7 +26,7 @@ describe('Account verification form', () => {
     // Submit the form
     cy.get('button[type="submit"]').click();
   });
-/*
+
   it('Completes step 1 - PreConsent', () => {
     // Check the step number
     cy.get('[data-cy="current-step"]').contains('2');
@@ -36,8 +36,11 @@ describe('Account verification form', () => {
     cy.contains('Securely connect my account').click();
     // Wait until the API call to `/api/institutions` has finished
     cy.wait('@api');
-  });
+    // Assert that the redirect happens and the URL contains the expected path
+    cy.location('href').should('include', 'consent.basiq.io/home');
 
+  });
+/*
   it('Completes step 2 - InstitutionPicker', () => {
     // Check the step number
     cy.get('[data-cy=current-step]').contains('3');
