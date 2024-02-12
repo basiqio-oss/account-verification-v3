@@ -31,9 +31,9 @@ describe('Account verification form', () => {
     // Check the step number
     cy.get('[data-cy="current-step"]').contains('2');
     // Open the learn more modal
-    //cy.contains('Learn more').click();
+    cy.contains('Learn more').click();
     // Intercept the click event on the button
-    cy.get('button[type="button"]').contains('Continue').click({ force: true });
+    cy.get('button[type="button"]').contains('Securely connect my account').click({ force: true });
     // Assert that the redirect URL matches the expected one
     cy.window().then(win => {
         const expectedRedirectUrl = 'https://consent.basiq.io/home';
