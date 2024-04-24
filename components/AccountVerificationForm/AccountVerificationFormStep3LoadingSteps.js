@@ -29,11 +29,10 @@ export function AccountVerificationFormStep3LoadingSteps() {
             const firstUUID = uuids[0];
             setJobId(firstUUID);
         } else {
-            console.log("No UUID found in the string.");
+            setJobId(newJobId);
         }
-    } else {
-        console.log("The newJobId variable is null or undefined.");
-    }
+    } 
+    
   }, [])
 
   return (
