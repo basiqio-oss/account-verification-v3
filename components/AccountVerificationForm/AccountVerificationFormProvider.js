@@ -180,7 +180,7 @@ function useBasiqConnection({ currentStep, userId }) {
   }
 
   async function createBasiqConnection() {
-    let newJobId = new URLSearchParams(window.location.search).get("jobId");
+    let newJobId = new URLSearchParams(window.location.search).get("jobIds");
     setInProgress(true);
     // Optimisic UI. We know the first job basiq will process will always be "verify-credentials"
     setStepNameInProgress('verify-credentials');
