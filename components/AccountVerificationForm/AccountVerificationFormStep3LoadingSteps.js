@@ -14,9 +14,27 @@ export function AccountVerificationFormStep3LoadingSteps() {
   const { error, progress, completed, stepNameInProgress, reset, setJobId } = basiqConnection;
 
   useEffect(() => {
-    const newJobId = new URLSearchParams(window.location.search).get("jobId");
+    const newJobId = new URLSearchParams(window.location.search).get("jobIds");
     console.log(newJobId); 
-    setJobId(newJobId);
+    // Regular expression to match UUIDs separated by commas
+    if (newJobId) {
+        // Regular expression to match UUIDs separated by commas
+        const uuidRegex = /[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/g;
+
+        // Extracting all UUIDs from the string
+        const uuids = newJobId.match(uuidRegex);
+
+        if (uuids && uuids.length > 0) {
+            // Extracting the first UUID
+            const firstUUID = uuids[0];
+            console.log(firstUUID); // Output: ff48fe10-4882-4008-b7b6-b4856d2459e5
+            setJobId(firstUUID);
+        } else {
+            console.log("No UUID found in the string.");
+        }
+    } else {
+        console.log("The newJobId variable is null or undefined.");
+    }
   }, [])
 
   return (
