@@ -27,7 +27,6 @@ export function AccountVerificationFormStep3LoadingSteps() {
         if (uuids && uuids.length > 0) {
             // Extracting the first UUID
             const firstUUID = uuids[0];
-            console.log(firstUUID); // Output: ff48fe10-4882-4008-b7b6-b4856d2459e5
             setJobId(firstUUID);
         } else {
             console.log("No UUID found in the string.");
