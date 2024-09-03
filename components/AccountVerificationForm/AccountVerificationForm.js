@@ -1,19 +1,20 @@
 import { useEffect } from 'react';
-import { Analytics } from '@vercel/analytics/react';
 import { useTernaryState } from '../../utils/useTernaryState';
 import { ProgressBar } from '../ProgressBar';
 import { AccountVerificationFormStep0SignUp } from './AccountVerificationFormStep0SignUp';
 import { AccountVerificationFormStep1PreConsent } from './AccountVerificationFormStep1PreConsent';
+import { AccountVerificationFormStep2InstitutionPicker } from './AccountVerificationFormStep2InstitutionPicker';
+import { AccountVerificationFormStep3InstitutionLogin } from './AccountVerificationFormStep3InstitutionLogin';
 import { AccountVerificationFormStep4SelectAccount } from './AccountVerificationFormStep4SelectAccount';
 import { AccountVerificationFormStep5Summary } from './AccountVerificationFormStep5Summary';
 import { useAccountVerificationForm } from './AccountVerificationFormProvider';
 import { AccountVerificationFormCancellationModal } from './AccountVerificationFormCancellationModal';
-import { AccountVerificationFormStep3LoadingSteps } from './AccountVerificationFormStep3LoadingSteps';
 
 export const FORM_COMPONENTS = [
   AccountVerificationFormStep0SignUp,
   AccountVerificationFormStep1PreConsent,
-  AccountVerificationFormStep3LoadingSteps,
+  AccountVerificationFormStep2InstitutionPicker,
+  AccountVerificationFormStep3InstitutionLogin,
   AccountVerificationFormStep4SelectAccount,
   AccountVerificationFormStep5Summary,
 ];
@@ -290,9 +291,6 @@ export function AccountVerificationForm() {
             </clipPath>
           </defs>
         </svg>
-        <div style={{position: "absolute", bottom: "10px", right: "left"}}>
-          &#9888; <strong>This is a demo app.</strong> 
-        </div>
       </div>
 
       {/* CANCELLATION MODAL */}
@@ -302,7 +300,6 @@ export function AccountVerificationForm() {
         onConfirm={cancel}
         cancelling={cancelling}
       />
-      <Analytics />
     </>
   );
 }

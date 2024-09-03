@@ -1,15 +1,10 @@
 import { useRef } from 'react';
-import { useState } from 'react';
-import { LoadingSpinner } from '../../components/LoadingSpinner';
 import { Button } from '../Button';
 import { Modal, ModalTitle } from '../Modal';
-import { useAccountVerificationForm } from './AccountVerificationFormProvider';
 
-export function AccountVerificationFormLearnMoreModal({ isOpen, onClose }) {
+export function AccountVerificationFormLearnMoreModal({ isOpen, onClose, onConfirm }) {
   const connectButtonRef = useRef(null);
-  const [submitting, setSubmitting] = useState(false); 
-  const { goToConsent } = useAccountVerificationForm()
-  
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} initialFocus={connectButtonRef}>
       <ModalTitle>
@@ -106,11 +101,8 @@ export function AccountVerificationFormLearnMoreModal({ isOpen, onClose }) {
 
       {/* Actions */}
       <div className="space-y-2">
-        <Button ref={connectButtonRef} loading={submitting} onClick={() => {
-                setSubmitting(true); // Set submitting state to true
-                goToConsent();
-            }} variant="bold" block>
-          {submitting ? <LoadingSpinner /> : "Securely connect my account"}
+        <Button ref={connectButtonRef} onClick={onConfirm} variant="bold" block>
+          Securely connect my account
         </Button>
         <Button onClick={onClose} variant="subtle" block>
           Not right now
