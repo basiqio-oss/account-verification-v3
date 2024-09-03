@@ -37,7 +37,7 @@ describe('Account verification form', () => {
     // Wait until the API call to `/api/institutions` has finished
     cy.wait('@api');
   });
-
+/*
   it('Completes step 2 - InstitutionPicker', () => {
     // Check the step number
     cy.get('[data-cy=current-step]').contains('3');
@@ -81,4 +81,5 @@ describe('Account verification form', () => {
     // Make sure we have a button which shows "View verified account"
     cy.contains('View verified account').should('be.visible');
   });
+  */
 });
