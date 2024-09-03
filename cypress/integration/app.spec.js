@@ -15,7 +15,7 @@ describe('Account verification form', () => {
     cy.route('/api/**').as('api');
     cy.route('https://au-api.basiq.io/**').as('basiqApi');
   });
-/*
+
   it('Completes step 0 - SignUp', () => {
     // Start from the "/account-verification" page
     cy.visit('http://localhost:3000/account-verification');
@@ -37,7 +37,7 @@ describe('Account verification form', () => {
     // Wait until the API call to `/api/institutions` has finished
     cy.wait('@api');
   });
-
+/*
   it('Completes step 2 - InstitutionPicker', () => {
     // Check the step number
     cy.get('[data-cy=current-step]').contains('3');

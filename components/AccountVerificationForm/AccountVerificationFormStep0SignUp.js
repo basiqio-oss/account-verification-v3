@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useFormState } from 'react-use-form-state';
 import { axios } from '../../utils/axios';
 import { Button } from '../Button';
@@ -9,41 +9,30 @@ import { StepLogo } from './StepLogo';
 import { StepHeading } from './StepHeading';
 
 export function AccountVerificationFormStep0SignUp() {
-  const { goToStep, cancel, updateAccountVerificationFormState, goForward } = useAccountVerificationForm();
-
+  const { cancel, goForward, updateAccountVerificationFormState } = useAccountVerificationForm();
   const [formState, { email }] = useFormState();
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState();
-
-  // Check for a current user session and if they have been directed from the consent UI & orward them to the account selection step
-  useEffect(() => {
-    // document.referrer will be null if directed to a page using http, so skip that check for development
-    if (process.env.NODE_ENV !== 'production') {
-      sessionStorage.getItem("userId") ? goToStep(2) : null
-    } else {
-      sessionStorage.getItem("userId") && document.referrer === "https://consent.basiq.io/" ? goToStep(2) : null  }
-  }, [])
 
   function handleSubmit(e) {
     e.preventDefault();
     setSubmitting(true);
     axios
       .post('/api/create-user', formState.values)
-      .then( async res => {
+      .then(res => {
         setSubmitting(false);
-        updateAccountVerificationFormState({ user: res.data })
-        sessionStorage.setItem("userId", res.data.id)
-        goForward()
+        updateAccountVerificationFormState({ user: res.data });
+        goForward();
       })
       .catch(error => {
         setSubmitting(false);
         setError(error);
       });
   }
-  
+
   return (
     <div className="flex flex-col space-y-8 sm:space-y-12">
-        {/* STEP LOGO */}
+      {/* STEP LOGO */}
       {/* To help the user keep context of what product they're using, */}
       {/* and what bank they're about to connect to. */}
       <StepLogo src="/product-logo-square.svg" alt="Piper logo" />
