@@ -1,6 +1,7 @@
 import toast from 'react-hot-toast';
 import { useEffect, useState, createContext, useContext } from 'react';
 import { useRouter } from 'next/router';
+import { getClientToken } from '../../clientAuthentication';
 import { axios } from '../../utils/axios';
 import { FORM_COMPONENTS } from './AccountVerificationForm';
 
@@ -25,14 +26,15 @@ const AccountVerificationFormContext = createContext({
   accountVerificationFormState: undefined,
   // Function to update the verification form state
   updateAccountVerificationFormState: undefined,
-  // Function to create a secure connection to the basiq API.
-  createBasiqConnection: undefined,
   // The state of the secure connection to the basiq API. See `useBasiqConnection`
   basiqConnection: undefined,
   // Function to reset the state of the form
   reset: undefined,
   // Function to be called when the user has successfully finished all steps
   hasCompletedForm: undefined,
+  // Function to redirect user to Basiq Consent UI
+  goToConsent: undefined,
+  createBasiqConnection: undefined
 });
 
 // This custom hook gives components access the `AccountVerificationFormContext` form context
@@ -61,7 +63,7 @@ export function AccountVerificationFormProvider({ children }) {
   const goForward = () => setCurrentStep(step => (step === totalSteps - 1 ? totalSteps - 1 : currentStep + 1));
 
   // State for managing the basiq connection
-  const { createBasiqConnection, basiqConnection, deleteBasiqConnection } = useBasiqConnection({
+  const { basiqConnection, createBasiqConnection, deleteBasiqConnection } = useBasiqConnection({
     currentStep,
     userId: accountVerificationFormState.user?.id,
     selectedInstitution: accountVerificationFormState.selectedInstitution,
@@ -72,6 +74,7 @@ export function AccountVerificationFormProvider({ children }) {
     setCurrentStep(0);
     setCancelling(false);
     setHasCompletedForm(false);
+    sessionStorage.clear()
   }
 
   // State for managing cancelling the account verification form
@@ -86,6 +89,7 @@ export function AccountVerificationFormProvider({ children }) {
     try {
       await deleteBasiqConnection();
       router.push('/');
+      sessionStorage.clear()
       resetState();
     } catch {
       // If something went wrong while deleting the basiq connection, we send the user to the home page via a full page refresh so all state is reset
@@ -94,9 +98,27 @@ export function AccountVerificationFormProvider({ children }) {
   }
 
   // Called when the user has successfully finished all steps
-  function finish() {
-    setHasCompletedForm(true);
-    router.push('/');
+  async function finish() {
+    try {
+      // Delete user at end of process when not in prod to clean up test data
+      // You can also enable this for production if you do not wish to maintain the user bucket or connection e.g. for a once off check 
+      if (process.env.NODE_ENV !== 'production') {
+        await deleteUser()
+      }
+      setHasCompletedForm(true);
+      sessionStorage.clear()
+      router.push('/');
+    } catch {
+      // If something went wrong while deleting the basiq connection, we send the user to the home page via a full page refresh so all state is reset
+      window.location = window.location.origin;
+    }
+  }
+
+  // Redirect to the external Basiq Consent UI
+  async function goToConsent(action = null) {
+    let userId = sessionStorage.getItem("userId")
+    const token = await getClientToken(userId);
+    window.location = (`https://consent.basiq.io/home?userId=${userId}&token=${token}&action=${action}`);
   }
 
   const contextValue = {
@@ -110,10 +132,13 @@ export function AccountVerificationFormProvider({ children }) {
     finish,
     accountVerificationFormState,
     updateAccountVerificationFormState,
-    createBasiqConnection,
+    getUserConsent,
     basiqConnection,
+    createBasiqConnection,
     reset: resetState,
     hasCompletedForm,
+    goToConsent,
+    deleteUser,
   };
 
   return (
@@ -122,7 +147,7 @@ export function AccountVerificationFormProvider({ children }) {
 }
 
 // Custom hook for managing the connect to the Basiq API
-function useBasiqConnection({ currentStep, userId, selectedInstitution }) {
+function useBasiqConnection({ currentStep, userId }) {
   const { asPath } = useRouter();
 
   const [jobId, setJobId] = useState();
@@ -133,7 +158,6 @@ function useBasiqConnection({ currentStep, userId, selectedInstitution }) {
   const [error, setError] = useState();
 
   function resetState() {
-    setJobId(undefined);
     setInProgress(false);
     setEstimatedProgress(undefined);
     setStepNameInProgress(undefined);
@@ -148,29 +172,25 @@ function useBasiqConnection({ currentStep, userId, selectedInstitution }) {
 
   // The estimated time job is expected time to take (in milliseconds)
   // For this demo, we only care about the "verify-credentials" and "retrieve-accounts" step
-  const estimatedTime = selectedInstitution
-    ? selectedInstitution.stats.averageDurationMs.verifyCredentials +
-      selectedInstitution.stats.averageDurationMs.retrieveAccounts
-    : undefined;
-
-  async function createBasiqConnection(data) {
-    if (!userId) return;
-    const jobId = await createConnection({ data, userId });
-    setInProgress(true);
-    // Optimisic UI. We know the first job basiq will process will always be "verify-credentials"
-    setStepNameInProgress('verify-credentials');
-    setJobId(jobId);
-  }
+  const estimatedTime = 1000;
 
   async function deleteBasiqConnection() {
     if (!jobId || !userId) return;
     await deleteConnection({ jobId, userId });
   }
 
+  async function createBasiqConnection() {
+    let newJobId = new URLSearchParams(window.location.search).get("jobIds");
+    setInProgress(true);
+    // Optimisic UI. We know the first job basiq will process will always be "verify-credentials"
+    setStepNameInProgress('verify-credentials');
+    setJobId(newJobId);
+  }
+
   // If we have a basiq connection, check the status every 2 seconds
   useEffect(() => {
     // We can't start a job without this information
-    if (!jobId || !userId) return;
+    if (!jobId) return;
     // If a job was started, but an error occurred or it's finished, we can stop polling
     if (error || completed) return;
 
@@ -183,7 +203,6 @@ function useBasiqConnection({ currentStep, userId, selectedInstitution }) {
     async function checkJobStatus() {
       try {
         const response = await checkConnectionStatus({ jobId });
-
         // A job contains multiple steps which can either be "pending" | "in-progress" | "success" | "failed"
         // In this demo, we only care about the "verify-credentials" and "retrieve-accounts" steps
         const filteredSteps = response.data.steps.filter(
@@ -250,7 +269,7 @@ function useBasiqConnection({ currentStep, userId, selectedInstitution }) {
   // trigger a toast when the job finishes processing or an error occurres
   useEffect(() => {
     if (!jobId) return; // Make sure we only trigger the toast when you're on the step 3
-    if (asPath === '/account-verification') return;
+    if (asPath.includes('/account-verification')) return;
     if (error) {
       toast.error(error.message, {
         title: error.name,
@@ -258,13 +277,13 @@ function useBasiqConnection({ currentStep, userId, selectedInstitution }) {
       });
       return;
     }
-    if (completed) {
-      toast.success('Please continue setup, and select an account to finish.', {
-        title: 'Bank connected',
-        appearance: 'success',
-      });
-      return;
-    }
+    // if (completed) {
+    //   toast.success('Please continue setup, and select an account to finish.', {
+    //     title: 'Bank connected',
+    //     appearance: 'success',
+    //   });
+    //   return;
+    // }
   }, [jobId, asPath, completed, error]);
 
   // Some banks can be pretty slow to connect with and often take longer than their estimated time
@@ -272,11 +291,13 @@ function useBasiqConnection({ currentStep, userId, selectedInstitution }) {
   const estimatedTimeOver = inProgress && estimatedProgress >= 95;
 
   // If the job is taking longer than the expected we will show 95% until the job is raedy
-  const progress = estimatedTimeOver ? 95 : estimatedProgress;
+  const progress = estimatedProgress;
 
   return {
     basiqConnection: {
       inProgress,
+      jobId,
+      setJobId,
       progress,
       stepNameInProgress,
       estimatedTime,
@@ -285,13 +306,14 @@ function useBasiqConnection({ currentStep, userId, selectedInstitution }) {
       completed,
       reset: resetState,
     },
-    createBasiqConnection,
+    getUserConsent,
     deleteBasiqConnection,
+    createBasiqConnection
   };
 }
 
 // The reason for attatching these properties to the error object is because we will use
-// thes e properties to display information about the error in `AccountVerificationFormStep3InstitutionLogin`
+// thes e properties to display information about the error in `AccountVerificationFormStep3LoadingSteps`
 function newStepError({ detail, title }) {
   const error = new Error();
   error.message = detail;
@@ -303,9 +325,9 @@ function newStepError({ detail, title }) {
 // IMPORTANT: Under no circumstance should you store your customers credentials anywhere in your application
 // https://api.basiq.io/reference/create-a-connection
 // https://api.basiq.io/reference/jobs
-async function createConnection({ userId, data }) {
-  const response = await axios.post(`https://au-api.basiq.io/users/${userId}/connections`, data);
-  return response.data.id;
+async function getUserConsent(userId) {
+  const response = await axios.get(`https://au-api.basiq.io/users/${userId}/consents`);
+  return response.data;
 }
 
 // Permanently deletes a connection with the Basiq API
@@ -313,6 +335,11 @@ async function createConnection({ userId, data }) {
 // https://api.basiq.io/reference/delete-a-connection
 async function deleteConnection({ userId, jobId }) {
   const response = await axios.delete(`https://au-api.basiq.io/users/${userId}/connections/${jobId}`);
+  return response.data.id;
+}
+
+async function deleteUser({ userId }) {
+  const response = await axios.delete(`https://au-api.basiq.io/users/${userId}`);
   return response.data.id;
 }
 

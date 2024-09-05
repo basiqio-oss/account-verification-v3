@@ -1,13 +1,17 @@
+import { useState } from 'react';
+import { track } from '@vercel/analytics';
 import { useTernaryState } from '../../utils/useTernaryState';
 import { Button } from '../Button';
-import { useAccountVerificationForm } from './AccountVerificationFormProvider';
+import { LoadingSpinner } from '../../components/LoadingSpinner';
 import { AccountVerificationFormLearnMoreModal } from './AccountVerificationFormLearnMoreModal';
 import { StepLogo } from './StepLogo';
 import { StepHeading } from './StepHeading';
 import { StepDescription } from './StepDescription';
+import { useAccountVerificationForm } from './AccountVerificationFormProvider';
 
 export function AccountVerificationFormStep1PreConsent() {
-  const { goForward } = useAccountVerificationForm();
+  const { goToConsent } = useAccountVerificationForm()
+  const [submitting, setSubmitting] = useState(false); // Initialize with true if needed
 
   // State for managing hiding/showing of the learn more model
   const [isLearnMoreModalOpen, openLearnMoreModal, closeLearnMoreModal] = useTernaryState(false);
@@ -36,7 +40,7 @@ export function AccountVerificationFormStep1PreConsent() {
           It's important to communicate the value exchange, i.e. what will the product be able to do once 
           the user has connected their bank. */}
           <StepDescription>
-            We need to verify the details of the account from which to to deduct the nominated regular fee.
+            We need to verify the details of the account from which to to track your spending.
           </StepDescription>
         </div>
 
@@ -169,8 +173,12 @@ export function AccountVerificationFormStep1PreConsent() {
 
         {/* ACTIONS */}
         <div className="space-y-2">
-          <Button variant="bold" block onClick={goForward}>
-            Continue
+         <Button variant="bold" loading={submitting} block onClick={() => {
+                setSubmitting(true); // Set submitting state to true
+                track('RedirectingintoConsentUI');
+                goToConsent(); // Call the goToConsent function
+            }}>
+             {submitting ? <LoadingSpinner /> : "Continue"}
           </Button>
 
           <Button variant="subtle" block onClick={openLearnMoreModal}>
@@ -182,7 +190,7 @@ export function AccountVerificationFormStep1PreConsent() {
         <AccountVerificationFormLearnMoreModal
           isOpen={isLearnMoreModalOpen}
           onClose={closeLearnMoreModal}
-          onConfirm={goForward}
+          onConfirm={(() => goToConsent())}
         />
       </div>
     </div>

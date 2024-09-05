@@ -39,18 +39,18 @@ async function getNewServerToken() {
     headers: {
       Authorization: `Basic ${process.env.BASIQ_API_KEY}`,
       'Content-Type': 'application/x-www-form-urlencoded',
-      'basiq-version': '2.0',
+      'basiq-version': '3.0',
     },
   });
   return data.access_token;
 }
 
-export async function getNewClientToken() {
-  const { data } = await axios.post('https://au-api.basiq.io/token', qs.stringify({ scope: 'CLIENT_ACCESS' }), {
+export async function getNewClientToken(userId) {
+  const { data } = await axios.post('https://au-api.basiq.io/token', qs.stringify({ scope: 'CLIENT_ACCESS', userId }), {
     headers: {
       Authorization: `Basic ${process.env.BASIQ_API_KEY}`,
       'Content-Type': 'application/x-www-form-urlencoded',
-      'basiq-version': '2.0',
+      'basiq-version': '3.0',
     },
   });
   return data.access_token;
