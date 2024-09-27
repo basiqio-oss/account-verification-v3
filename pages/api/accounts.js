@@ -46,4 +46,4 @@ const accounts = async (req, res) => {
   }
 };
 
-module.exports = accounts;
+export default accounts;

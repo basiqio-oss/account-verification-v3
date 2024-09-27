@@ -23,4 +23,4 @@ const clientToken = async (req, res) => {
   }
 };
 
-module.exports = clientToken;
+export default clientToken;
