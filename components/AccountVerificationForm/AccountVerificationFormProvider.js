@@ -180,7 +180,7 @@ function useBasiqConnection({ currentStep, userId }) {
   }
 
   async function createBasiqConnection() {
-    let newJobId = new URLSearchParams(window.location.search).get("jobId");
+    let newJobId = new URLSearchParams(window.location.search).get("jobIds");
     setInProgress(true);
     // Optimisic UI. We know the first job basiq will process will always be "verify-credentials"
     setStepNameInProgress('verify-credentials');
@@ -277,13 +277,13 @@ function useBasiqConnection({ currentStep, userId }) {
       });
       return;
     }
-    if (completed) {
-      toast.success('Please continue setup, and select an account to finish.', {
-        title: 'Bank connected',
-        appearance: 'success',
-      });
-      return;
-    }
+    // if (completed) {
+    //   toast.success('Please continue setup, and select an account to finish.', {
+    //     title: 'Bank connected',
+    //     appearance: 'success',
+    //   });
+    //   return;
+    // }
   }, [jobId, asPath, completed, error]);
 
   // Some banks can be pretty slow to connect with and often take longer than their estimated time

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { track } from '@vercel/analytics';
 import { useTernaryState } from '../../utils/useTernaryState';
 import { Button } from '../Button';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
@@ -174,6 +175,7 @@ export function AccountVerificationFormStep1PreConsent() {
         <div className="space-y-2">
          <Button variant="bold" loading={submitting} block onClick={() => {
                 setSubmitting(true); // Set submitting state to true
+                track('RedirectingintoConsentUI');
                 goToConsent(); // Call the goToConsent function
             }}>
              {submitting ? <LoadingSpinner /> : "Continue"}

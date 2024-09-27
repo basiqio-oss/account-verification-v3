@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
+import { track } from '@vercel/analytics';
 import { RadioGroup } from '@headlessui/react';
 import { formatCurrency } from '../../utils/formatCurrency';
 import { maskAccountNumber } from '../../utils/maskAccountNumber';
@@ -162,10 +163,14 @@ export function AccountVerificationFormStep4SelectAccount() {
             </RadioGroup>
             {/* Actions */}
             <div className="space-y-2">
-              <Button type="submit" block>
+              <Button type="submit" onClick={() => {
+                  track('ReturnfromConsentUI');
+                }}
+              block>
                 Finish
               </Button>
-              <Button type="button" variant="subtle" block onClick={(() => goToConsent("connect"))}>
+              <Button type="button" variant="subtle" block onClick={(() => 
+                goToConsent("connect"))}>
                 Connect a different account
               </Button>
             </div>
