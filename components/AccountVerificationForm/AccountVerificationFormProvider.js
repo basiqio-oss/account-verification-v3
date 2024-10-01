@@ -234,7 +234,6 @@ function useBasiqConnection({ currentStep, userId }) {
         setInProgress(!completed);
         if (completed) setEstimatedProgress(100);
       } catch (error) {
-        console.log(error);
         setError(error);
       }
     }
