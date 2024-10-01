@@ -78,7 +78,7 @@ export default function Home() {
                 )}
                 {/* ACTION */}
                 <Link href="/account-verification" passHref>
-                  <Button as="a" variant="inverted" block>
+                  <Button variant="inverted" block>
                     {basiqConnectionInProgress || basiqConnectionSuccess ? 'Continue setup' : 'Get started'}
                   </Button>
                 </Link>

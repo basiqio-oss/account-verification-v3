@@ -4,8 +4,6 @@ import { LoadingSpinner } from '../../components/LoadingSpinner';
 import { Button } from '../Button';
 import { Modal, ModalTitle } from '../Modal';
 import { useAccountVerificationForm } from './AccountVerificationFormProvider';
-import Link from 'next/link';
-
 
 export function AccountVerificationFormLearnMoreModal({ isOpen, onClose }) {
   const connectButtonRef = useRef(null);
@@ -66,14 +64,14 @@ export function AccountVerificationFormLearnMoreModal({ isOpen, onClose }) {
         <h4 className="font-semibold leading-snug text-md">Bank grade security</h4>
         <p className="text-sm leading-relaxed text-neutral-muted-darker">
           Powered by leading open banking platform{' '}
-          <link
+          <a
             target="_blank"
             href="https://basiq.io"
             rel="noopener noreferrer"
             className="underline rounded outline-none text-primary-bold-darker hover:text-opacity-90 active:text-opacity-75 focus:ring-2 focus:ring-primary-bold focus:ring-opacity-30 ring-offset-1 ring-offset-transparent"
           >
             basiq.io
-          </link>
+          </a>
           , we use encryption trusted by all major banks, to keep your data private and secure. We undergo
           regular penetration testing and privacy compliance audits.
         </p>

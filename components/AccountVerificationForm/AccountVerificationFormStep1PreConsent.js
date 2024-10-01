@@ -8,7 +8,6 @@ import { StepLogo } from './StepLogo';
 import { StepHeading } from './StepHeading';
 import { StepDescription } from './StepDescription';
 import { useAccountVerificationForm } from './AccountVerificationFormProvider';
-import Link from 'next/link';
 
 export function AccountVerificationFormStep1PreConsent() {
   const { goToConsent } = useAccountVerificationForm()
@@ -161,14 +160,14 @@ export function AccountVerificationFormStep1PreConsent() {
         {/* POWERED BY BASIQ API */}
         <p className="max-w-xs mx-auto text-xs leading-relaxed text-center text-neutral-muted-darker">
           Powered by open data platform{' '}
-          <link
+          <a
             target="_blank"
             href="https://basiq.io"
             rel="noopener noreferrer"
             className="underline rounded outline-none text-primary-bold-darker hover:text-opacity-90 active:text-opacity-75 focus:ring-2 focus:ring-primary-bold focus:ring-opacity-30 ring-offset-1 ring-offset-transparent"
           >
             basiq.io
-          </link>{' '}
+          </a>{' '}
           to securely connect your bank account.
         </p>
 

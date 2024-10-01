@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTernaryState } from '../../utils/useTernaryState';
 import { Button } from '../Button';
 import { CircularProgressBar } from '../CircularProgressBar';
@@ -6,42 +6,42 @@ import { useAccountVerificationForm } from './AccountVerificationFormProvider';
 import { AccountVerificationFormResumeInBackgroundModal } from './AccountVerificationFormResumeInBackgroundModal';
 
 export function AccountVerificationFormStep3LoadingSteps() {
-
   // State for managing hiding/showing of the resume in background modal
   const [isResumeModalOpen, openResumeModal, closeResumeModal] = useTernaryState(false);
-
+  
   const { basiqConnection, goForward } = useAccountVerificationForm();
-  const { error, progress, completed, stepNameInProgress, reset, setJobId } = basiqConnection;
+  const { error, completed, stepNameInProgress, reset, setJobId } = basiqConnection;
 
-    useEffect(() => {
-      const newJobId = new URLSearchParams(window.location.search).get("jobIds");
-      console.log(newJobId); 
-      // Regular expression to match UUIDs separated by commas
-      if (newJobId) {
-          // Regular expression to match UUIDs separated by commas
-          const uuidRegex = /[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/g;
+  // State for managing loading progress
+  const [progress, setProgress] = useState(0);
 
-          // Extracting all UUIDs from the string
-          const uuids = newJobId.match(uuidRegex);
+  useEffect(() => {
+    const jobIdParam = new URLSearchParams(window.location.search).get("jobId");
+    const jobIdsParam = new URLSearchParams(window.location.search).get("jobIds");
+    
+    const newJobId = jobIdsParam; // Use jobIds since it's intended to contain UUIDs
 
-          if (uuids && uuids.length > 0) {
-              // Extracting the first UUID
-              const firstUUID = uuids[0];
-              console.log(firstUUID); // Output: ff48fe10-4882-4008-b7b6-b4856d2459e5
-              setJobId(firstUUID);
-          } else {
-              console.log("No UUID found in the string.");
-          }
+    if (newJobId) {
+      const uuidRegex = /[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/g;
+      const uuids = newJobId.match(uuidRegex);
+
+      if (uuids && uuids.length > 0) {
+        const firstUUID = uuids[0];
+        console.log(firstUUID);
+        setJobId(firstUUID);
       } else {
-          console.log("The newJobId variable is null or undefined.");
+        setJobId(newJobId);
       }
-  }, [])
+    } else {
+      console.log("The newJobId variable is null or undefined.");
+    }
+  }, []);
 
   return (
     <div className="flex flex-col space-y-10 sm:space-y-12">
       <div className="flex flex-col items-center text-center space-y-8">
         <CircularProgressBar value={progress} error={error} />
-    
+
         {error ? (
           <div className="w-full space-y-8">
             <div className="space-y-3 sm:space-y-4">

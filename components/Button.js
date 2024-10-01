@@ -3,9 +3,12 @@ import { LoadingSpinner } from './LoadingSpinner';
 
 const VARIANT_MAP = {
   bold: 'bg-primary-bold text-white hover:bg-opacity-90 active:bg-opacity-75 focus:ring-2 focus:ring-primary-bold focus:ring-opacity-30 ring-offset-1 ring-offset-transparent outline-none',
-  subtle: 'bg-primary-subtle text-primary-bold hover:bg-primary-subtle-darker active:bg-primary-subtle-darkest focus:ring-2 focus:ring-primary-bold focus:ring-opacity-30 ring-offset-1 ring-offset-transparent outline-none',
-  inverted: 'bg-white text-primary-bold hover:bg-opacity-90 active:bg-opacity-75 focus:ring-2 focus:ring-white focus:ring-opacity-30 ring-offset-1 ring-offset-transparent outline-none',
-  critical: 'bg-critical-bold text-white hover:bg-opacity-90 active:bg-opacity-75 focus:ring-2 focus:ring-critical-bold focus:ring-opacity-30 ring-offset-1 ring-offset-transparent outline-none',
+  subtle:
+    'bg-primary-subtle text-primary-bold hover:bg-primary-subtle-darker active:bg-primary-subtle-darkest focus:ring-2 focus:ring-primary-bold focus:ring-opacity-30 ring-offset-1 ring-offset-transparent outline-none',
+  inverted:
+    'bg-white text-primary-bold hover:bg-opacity-90 active:bg-opacity-75 focus:ring-2 focus:ring-white focus:ring-opacity-30 ring-offset-1 ring-offset-transparent outline-none',
+  critical:
+    'bg-critical-bold text-white hover:bg-opacity-90 active:bg-opacity-75 focus:ring-2 focus:ring-critical-bold focus:ring-opacity-30 ring-offset-1 ring-offset-transparent	outline-none',
 };
 
 export const Button = forwardRef(function Button(
@@ -14,10 +17,6 @@ export const Button = forwardRef(function Button(
 ) {
   const variantClasses = VARIANT_MAP[variant];
   const disabled = loading || disabledProp;
-
-  // Handle the case where Tag is 'a' and there's a potential nested <a> issue
-  const isAnchor = Tag === 'a';
-  
   return (
     <Tag
       ref={ref}
@@ -28,7 +27,6 @@ export const Button = forwardRef(function Button(
         disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'
       }`}
       {...props}
-      {...(isAnchor && props.href ? {} : { role: 'button' })} // Ensure valid HTML role if Tag is not 'a'
     >
       {loading ? <LoadingSpinner /> : children}
     </Tag>

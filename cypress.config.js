@@ -1,12 +1,14 @@
-const { defineConfig } = require('cypress')
+const { defineConfig } = require('cypress');
 
 module.exports = defineConfig({
   e2e: {
-    // We've imported your old cypress plugins here.
-    // You may want to clean this up later by importing these.
-    setupNodeEvents(on, config) {
-      return require('./cypress/plugins/index.js')(on, config)
-    },
     baseUrl: 'http://localhost:3000',
+    supportFile: 'cypress/integration/app.spec.js',
+    specPattern: 'cypress/integration/**/*.js',
+    setupNodeEvents(on, config) {
+      // Example: require plugins if necessary
+      // require('cypress-plugin-name')(on, config);
+      return config; // Important: Return the config object
+    },
   },
-})
+});
