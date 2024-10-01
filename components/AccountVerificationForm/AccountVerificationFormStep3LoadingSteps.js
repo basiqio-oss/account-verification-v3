@@ -16,7 +16,6 @@ export function AccountVerificationFormStep3LoadingSteps() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const jobIdParam = new URLSearchParams(window.location.search).get("jobId");
     const jobIdsParam = new URLSearchParams(window.location.search).get("jobIds");
     
     const newJobId = jobIdsParam; // Use jobIds since it's intended to contain UUIDs
@@ -27,9 +26,9 @@ export function AccountVerificationFormStep3LoadingSteps() {
 
       if (uuids && uuids.length > 0) {
         const firstUUID = uuids[0];
-        console.log(firstUUID);
         setJobId(firstUUID);
       } else {
+        setProgress(100);
         setJobId(newJobId);
       }
     } else {
@@ -45,7 +44,7 @@ export function AccountVerificationFormStep3LoadingSteps() {
         {error ? (
           <div className="w-full space-y-8">
             <div className="space-y-3 sm:space-y-4">
-              <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">{error?.name}</h2>
+              <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">{error?.response?.data.data[0].detail}</h2>
               <p className="text-sm sm:text-base text-neutral-muted-darker">{error?.message}</p>
             </div>
             <Button block onClick={reset}>
