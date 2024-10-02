@@ -9,16 +9,31 @@ on:
 
 jobs:
   cypress:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'  # Adjust the version as needed
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build the application
+        run: yarn build
+
+      - name: Start the application
+        run: yarn start &
+        
+      - name: Wait for the application to start
+        run: npx wait-on http://localhost:3000
+
       - name: Cypress run
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v2
         env:
           BASIQ_API_KEY: ${{ secrets.BASIQ_API_KEY }}
         with:
-          build: yarn build
-          start: yarn run start
           wait-on: http://localhost:3000

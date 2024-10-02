@@ -57,9 +57,14 @@ export function ToastNotification() {
 
           {/* Toast content */}
           <div className="flex flex-col flex-grow space-y-1">
-            {t.title && <span className="font-medium leading-normal">{resolveValue(t.title)}</span>}
+            {t.type && (
+              <span className="font-medium leading-normal">
+                {resolveValue(t.type.charAt(0).toUpperCase() + t.type.slice(1))}
+              </span>
+            )}
             {t.message && <span className="text-sm">{resolveValue(t.message)}</span>}
           </div>
+
 
           {/* Dismiss */}
           <button
