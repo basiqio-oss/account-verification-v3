@@ -18,7 +18,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.4.0",
-    "react-use-form-state": "^18.2.0"
+    "react-use-form-state": "^0.13.2"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",
@@ -30,5 +30,8 @@
     "eslint-plugin-tailwind": "^0.2.1",
     "postcss": "^8.4.21",
     "tailwindcss": "^3.3.2"
+  },
+  "resolutions": {
+    "react-use-form-state/react": "^18.2.0"
   }
 }
