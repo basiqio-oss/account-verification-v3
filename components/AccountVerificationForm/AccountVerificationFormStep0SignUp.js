@@ -22,7 +22,7 @@ export function AccountVerificationFormStep0SignUp() {
       sessionStorage.getItem("userId") ? goToStep(2) : null
     } else {
       sessionStorage.getItem("userId") && document.referrer === "https://consent.basiq.io/" ? goToStep(2) : null  }
-  }, [])
+  }, [goToStep])
 
   function handleSubmit(e) {
     e.preventDefault();
