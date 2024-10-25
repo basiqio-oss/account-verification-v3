@@ -34,7 +34,7 @@ export function AccountVerificationFormStep3LoadingSteps() {
     } else {
       console.log("The newJobId variable is null or undefined.");
     }
-  }, []);
+  }, [setJobId]);
 
   return (
     <div className="flex flex-col space-y-10 sm:space-y-12">
