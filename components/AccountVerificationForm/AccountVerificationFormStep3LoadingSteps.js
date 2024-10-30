@@ -18,7 +18,7 @@ export function AccountVerificationFormStep3LoadingSteps() {
   useEffect(() => {
     const jobIdsParam = new URLSearchParams(window.location.search).get("jobIds");
     
-    const newJobId = jobIdsParam; // Use jobIds since it's intended to contain UUIDs
+    const newJobId = jobIdsParam;
 
     if (newJobId) {
       const uuidRegex = /[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/g;
@@ -26,15 +26,16 @@ export function AccountVerificationFormStep3LoadingSteps() {
 
       if (uuids && uuids.length > 0) {
         const firstUUID = uuids[0];
+        setProgress(100);
         setJobId(firstUUID);
       } else {
-        setProgress(100);
+        setProgress(0);
         setJobId(newJobId);
       }
     } else {
       console.log("The newJobId variable is null or undefined.");
     }
-  }, []);
+  }, [setJobId]);
 
   return (
     <div className="flex flex-col space-y-10 sm:space-y-12">

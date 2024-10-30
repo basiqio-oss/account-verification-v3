@@ -3,10 +3,12 @@ import { useFormState } from 'react-use-form-state';
 import { axios } from '../../utils/axios';
 import { Button } from '../Button';
 import { TextField } from '../TextField';
+import { validateEmail } from '../../utils/validation'; 
 import { ErrorMessage } from '../ErrorMessage';
 import { useAccountVerificationForm } from './AccountVerificationFormProvider';
 import { StepLogo } from './StepLogo';
 import { StepHeading } from './StepHeading';
+
 
 export function AccountVerificationFormStep0SignUp() {
   const { goToStep, cancel, updateAccountVerificationFormState, goForward } = useAccountVerificationForm();
@@ -26,7 +28,15 @@ export function AccountVerificationFormStep0SignUp() {
 
   function handleSubmit(e) {
     e.preventDefault();
+
+    const emailValue = formState.values.email;  
+    if (!validateEmail(emailValue)) {
+      setError({ message: 'Please enter a valid email address.' });
+      return;
+    }
+
     setSubmitting(true);
+
     axios
       .post('/api/create-user', formState.values)
       .then( async res => {
