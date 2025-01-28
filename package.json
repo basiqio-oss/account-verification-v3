@@ -33,6 +33,6 @@
   },
   "resolutions": {
     "react-use-form-state/react": "^18.2.0",
-    "cross-spawn": "7.0.3"
+    "cross-spawn": "6.0.6"
   }
 }
