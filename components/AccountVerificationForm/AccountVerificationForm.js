@@ -290,9 +290,22 @@ export function AccountVerificationForm() {
             </clipPath>
           </defs>
         </svg>
-        <div style={{position: "absolute", bottom: "10px", right: "left"}}>
-          &#9888; <strong>This is a demo app.</strong> 
+      {/* DISCLAIMER BANNER */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-yellow-300 border-yellow-400 p-3 text-center text-sm text-yellow-900 dark:bg-yellow-500 dark:border-yellow-600 dark:text-yellow-950">
+        <div className="container mx-auto flex items-center justify-center gap-2">
+          <span>
+            &#9888; <strong>This is a demo app.</strong> This app uses polling; if you want to use the webhooks app, you
+            can{" "}
+            <a
+              href="https://av-webhooks.vercel.app/"
+              className="font-medium underline hover:text-yellow-950 dark:hover:text-black"
+            >
+              use it here
+            </a>
+            .
+          </span>
         </div>
+      </div>
       </div>
 
       {/* CANCELLATION MODAL */}
