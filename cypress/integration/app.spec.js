@@ -1,5 +1,3 @@
-import fixtures from '../fixtures/example.json';
-
 describe('Index page', () => {
   it('Should navigate to the account verification form', () => {
     cy.visit('http://localhost:3000/');

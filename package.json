@@ -4,7 +4,7 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "cypress": "cypress open --config-file=cypress.config.js",
     "cypress:run": "cypress run --config-file=cypress.config.js"
   },
