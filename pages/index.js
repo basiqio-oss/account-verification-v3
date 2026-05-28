@@ -14,7 +14,21 @@ export default function Home() {
   return (
     <div>
       <SEO />
-      <main className="flex flex-col justify-center min-h-screen bg-gradient-to-tr from-primary-bold to-primary-accent">
+      <main className="relative flex flex-col justify-center min-h-screen overflow-hidden">
+        {/* Background video */}
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+        >
+          <source src="/videos/Floating_bank_building_with_curr…_202605261317.mp4" type="video/mp4" />
+        </video>
+
+        {/* Subtle dark overlay for readability */}
+        <div className="absolute inset-0 bg-black opacity-55" />
+
         <div className="z-10 max-w-md px-4 pt-8 pb-16 mx-auto text-center space-y-6 sm:space-y-8">
           {/* PRODUCT LOGO */}
           <div className="inline-block space-y-6 sm:space-y-8">
@@ -87,14 +101,8 @@ export default function Home() {
           )}
         </div>
 
-        {/* Decorative blurry circles */}
-        <div className="absolute w-full h-screen overflow-hidden">
-          <div className="absolute -mt-64 bg-white rounded-full opacity-40 w-80 h-80 top-1/2 left-1/2 -ml-[800px] blur-xl mix-blend-overlay" />
-          <div className="absolute -mt-10 bg-white rounded-full opacity-50 w-52 h-52 top-1/2 left-1/2 -ml-80 blur-md mix-blend-overlay" />
-          <div className="absolute -ml-16 bg-white rounded-full -mt-[550px] opacity-10 w-72 h-72 top-1/2 left-1/2 blur-2xl mix-blend-overlay" />
-          <div className="absolute w-32 h-32 ml-24 -mt-32 bg-white rounded-full opacity-25 top-1/2 left-1/2 blur-sm mix-blend-overlay" />
-          <div className="absolute mt-24 bg-white rounded-full opacity-40 w-96 h-96 top-1/2 left-1/2 ml-[450px] blur-xl mix-blend-overlay" />
-        </div>
+        {/* Vignette */}
+        <div className="absolute inset-0 bg-radial-vignette pointer-events-none" />
       </main>
     </div>
   );
