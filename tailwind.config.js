@@ -14,16 +14,16 @@ module.exports = {
       // Primary brand colours
       primary: {
         // Subtle
-        subtle: '#F1F0FF', // <Button variant="subtle"/> bg, and radio options e.g.
-        'subtle-darker': '#E8E5FF', // <Button variant="subtle"/> :hover bg
-        'subtle-darkest': '#DEDBFF', // <Button variant="subtle"/> :active bg
+        subtle: '#E6FAF7', // <Button variant="subtle"/> bg, and radio options e.g.
+        'subtle-darker': '#CCF5EE', // <Button variant="subtle"/> :hover bg
+        'subtle-darkest': '#B3EFE6', // <Button variant="subtle"/> :active bg
 
         // Bold
-        bold: '#4737FF', // <Button variant="bold"/> bg, and primary-bold -> primary-accent bg gradients e.g.
-        'bold-darker': '#1400FE', // Links (darker to provide more contrast)
+        bold: '#0D9E8A', // <Button variant="bold"/> bg, and primary-bold -> primary-accent bg gradients e.g.
+        'bold-darker': '#0A7A6A', // Links (darker to provide more contrast)
 
         // Accent
-        accent: '#9C4EFF', // primary-bold to primary-accent bg gradient e.g.
+        accent: '#24C9AF', // primary-bold to primary-accent bg gradient e.g.
       },
 
       // Secondary brand colours
@@ -93,6 +93,9 @@ module.exports = {
             opacity: '0',
           },
         },
+      },
+      backgroundImage: {
+        'radial-vignette': 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.45) 100%)',
       },
     },
   },
