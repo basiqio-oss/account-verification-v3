@@ -23,7 +23,7 @@ export default function Home() {
           playsInline
           className="absolute inset-0 w-full h-full object-cover"
         >
-          <source src="/videos/Floating_bank_building_with_curr…_202605261317.mp4" type="video/mp4" />
+          <source src="/videos/floating-bank-building.mp4" type="video/mp4" />
         </video>
 
         {/* Subtle dark overlay for readability */}
