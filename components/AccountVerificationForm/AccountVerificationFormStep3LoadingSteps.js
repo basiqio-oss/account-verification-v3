@@ -10,7 +10,7 @@ export function AccountVerificationFormStep3LoadingSteps() {
   const [isResumeModalOpen, openResumeModal, closeResumeModal] = useTernaryState(false);
   
   const { basiqConnection, goForward, goToConsent } = useAccountVerificationForm();
-  const { error, completed, stepNameInProgress, reset, setJobId } = basiqConnection;
+  const { error, completed, stepNameInProgress, setJobId } = basiqConnection;
 
   // State for managing loading progress
   const [progress, setProgress] = useState(0);
