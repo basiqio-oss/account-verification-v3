@@ -9,11 +9,17 @@ export function AccountVerificationFormStep3LoadingSteps() {
   // State for managing hiding/showing of the resume in background modal
   const [isResumeModalOpen, openResumeModal, closeResumeModal] = useTernaryState(false);
   
-  const { basiqConnection, goForward } = useAccountVerificationForm();
-  const { error, completed, stepNameInProgress, reset, setJobId } = basiqConnection;
+  const { basiqConnection, goForward, goToConsent } = useAccountVerificationForm();
+  const { error, completed, stepNameInProgress, setJobId } = basiqConnection;
 
   // State for managing loading progress
   const [progress, setProgress] = useState(0);
+  const [connecting, setConnecting] = useState(false);
+
+  async function handleConnect() {
+    setConnecting(true);
+    await goToConsent('connect');
+  }
 
   useEffect(() => {
     const jobIdsParam = new URLSearchParams(window.location.search).get("jobIds");
@@ -48,8 +54,8 @@ export function AccountVerificationFormStep3LoadingSteps() {
               <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">{error?.response?.data.data[0].detail}</h2>
               <p className="text-sm sm:text-base text-neutral-muted-darker">{error?.message}</p>
             </div>
-            <Button block onClick={reset}>
-              Try again
+            <Button block loading={connecting} onClick={handleConnect}>
+              Connect
             </Button>
           </div>
         ) : completed ? (
