@@ -12,11 +12,11 @@ import { StepHeading } from './StepHeading';
 import { StepDescription } from './StepDescription';
 
 export function AccountVerificationFormStep4SelectAccount() {
-  const { goForward, updateAccountVerificationFormState, goToConsent, getUserConsent } = useAccountVerificationForm();
+  const { goForward, updateAccountVerificationFormState, goToConsent } = useAccountVerificationForm();
 
   const userId = sessionStorage.getItem("userId");
 
-  const [selectedAccount, setSelectedAccount] = useState();
+  const [selectedAccount, setSelectedAccount] = useState(null);
   const [validationError, setValidationError] = useState(false);
 
   const { data, error, loading } = useAccountsData({
@@ -36,13 +36,8 @@ export function AccountVerificationFormStep4SelectAccount() {
     }
   }
 
-  async function retryConnection() {
-    try {
-      await getUserConsent(userId)
-      goToConsent("connect")
-    } catch {
-      goToConsent()
-    }
+  function retryConnection() {
+    goToConsent('connect');
   }
 
   if (!userId ) return null;

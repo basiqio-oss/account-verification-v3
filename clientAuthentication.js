@@ -19,20 +19,21 @@ export async function getBasiqAuthorizationHeader() {
   return `Bearer ${token}`;
 }
 
-export async function getClientToken(userId) {
+export async function getClientToken() {
   let token = getClientTokenFromLocalStorage();
   const refreshDate = getClientTokenRefreshDateFromLocalStorage() || 0;
 
-  if (!token || Date.now() - refreshDate > REFRESH_INTERVAL || userId) {
+  if (!token || Date.now() - refreshDate > REFRESH_INTERVAL) {
     // If we don't have a client token in memory or the token has expired, fetch a new one
-    token = await updateClientToken(userId);
+    // The server reads the userId from the session cookie — it is not accepted as a query param.
+    token = await updateClientToken();
   }
 
   return token;
 }
 
-async function updateClientToken(userId) {
-  const token = await getNewClientToken(userId);
+async function updateClientToken() {
+  const token = await getNewClientToken();
   setClientTokenInLocalStorage(token);
 
   const refreshDate = Date.now();
@@ -41,9 +42,15 @@ async function updateClientToken(userId) {
   return token;
 }
 
-async function getNewClientToken(userId) {
-  const { data } = await axios.get('/api/client-token', { params: { userId } });
+async function getNewClientToken() {
+  // No userId param — the BFF reads it from the HttpOnly session cookie set during user creation.
+  const { data } = await axios.get('/api/client-token');
   return data;
+}
+
+export function clearClientToken() {
+  localStorage.removeItem(TOKEN_KEY);
+  localStorage.removeItem(REFRESH_DATE_KEY);
 }
 
 export function getClientTokenFromLocalStorage() {

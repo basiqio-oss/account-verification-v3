@@ -1,6 +1,7 @@
 const axios = require('axios');
 const { getBasiqAuthorizationHeader } = require('../../serverAuthentication');
 const { validateEmail } = require('../../utils/validation');
+const { setSessionCookie } = require('../../utils/sessionCookie');
 
 
 /**
@@ -28,9 +29,16 @@ const createUser = async (req, res) => {
         },
         data: req.body,
       });
+      // Bind this browser session to the newly created user so that downstream
+      // BFF routes (/api/accounts, /api/client-token) can only be called by
+      // someone who went through this creation step — the cookie is HttpOnly,
+      // SameSite=Strict, and HMAC-signed, so it cannot be read or forged by JS.
+      setSessionCookie(res, data.id);
       res.status(200).json(data);
     } catch (error) {
-      res.status(400).json({ message: error.message });
+      const basiqError = error.response?.data;
+      console.error('[create-user] Basiq error:', JSON.stringify(basiqError ?? error.message));
+      res.status(error.response?.status ?? 400).json(basiqError ?? { message: error.message });
     }
   } else {
     // Only POST is allowed

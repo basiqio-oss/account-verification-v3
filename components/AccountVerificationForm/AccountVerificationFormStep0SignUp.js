@@ -5,6 +5,7 @@ import { Button } from '../Button';
 import { TextField } from '../TextField';
 import { validateEmail } from '../../utils/validation'; 
 import { ErrorMessage } from '../ErrorMessage';
+import { clearClientToken } from '../../clientAuthentication';
 import { useAccountVerificationForm } from './AccountVerificationFormProvider';
 import { StepLogo } from './StepLogo';
 import { StepHeading } from './StepHeading';
@@ -17,13 +18,26 @@ export function AccountVerificationFormStep0SignUp() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState();
 
-  // Check for a current user session and if they have been directed from the consent UI & orward them to the account selection step
+  // Check for a current user session and if they have been directed from the consent UI & forward them to the account selection step.
+  // We call /api/establish-session first so the session cookie is always valid before downstream
+  // BFF routes (/api/accounts, /api/client-token) are called from a later step.
   useEffect(() => {
-    // document.referrer will be null if directed to a page using http, so skip that check for development
-    if (process.env.NODE_ENV !== 'production') {
-      sessionStorage.getItem("userId") ? goToStep(2) : null
-    } else {
-      sessionStorage.getItem("userId") && document.referrer === "https://consent.basiq.io/" ? goToStep(2) : null  }
+    const userId = sessionStorage.getItem('userId');
+    if (!userId) return;
+
+    const shouldSkip =
+      process.env.NODE_ENV !== 'production' ||
+      document.referrer === 'https://consent.basiq.io/';
+
+    if (!shouldSkip) return;
+
+    axios
+      .post('/api/establish-session', { userId })
+      .then(() => goToStep(2))
+      .catch(() => {
+        // userId is stale or invalid — clear it and let the user start fresh
+        sessionStorage.removeItem('userId');
+      });
   }, [goToStep])
 
   function handleSubmit(e) {
@@ -39,11 +53,14 @@ export function AccountVerificationFormStep0SignUp() {
 
     axios
       .post('/api/create-user', formState.values)
-      .then( async res => {
+      .then(async res => {
         setSubmitting(false);
-        updateAccountVerificationFormState({ user: res.data })
-        sessionStorage.setItem("userId", res.data.id)
-        goForward()
+        updateAccountVerificationFormState({ user: res.data });
+        sessionStorage.setItem('userId', res.data.id);
+        // Clear any cached CLIENT_ACCESS token from a previous user session so
+        // goToConsent always mints a fresh token bound to this new user.
+        clearClientToken();
+        goForward();
       })
       .catch(error => {
         setSubmitting(false);

@@ -1,5 +1,5 @@
 const { getNewClientToken } = require('../../serverAuthentication');
-const { validateUserId } = require('../../utils/validation');
+const { getSessionUserId } = require('../../utils/sessionCookie');
 
 /**
  * This API endpoint retrieves a Basiq API token with the scope of `CLIENT_ACCESS`
@@ -8,18 +8,19 @@ const { validateUserId } = require('../../utils/validation');
  */
 
 const clientToken = async (req, res) => {
-  const { userId } = req.query;
-    
-  // Validate the userId query parameter
-  if (!validateUserId(userId)) {
-    res.status(400).json({ message: 'Invalid userId' });
+  // Require a valid session cookie — userId is never accepted from query params
+  // to prevent an unauthenticated caller from minting tokens for arbitrary users.
+  const userId = getSessionUserId(req);
+  if (!userId) {
+    res.status(401).json({ message: 'Unauthorized' });
     return;
   }
   try {
-    const clientToken = await getNewClientToken(userId);
-    res.status(200).json(clientToken);
+    const token = await getNewClientToken(userId);
+    res.status(200).json(token);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    const basiqError = error.response?.data;
+    res.status(error.response?.status ?? 400).json(basiqError ?? { message: error.message });
   }
 };
 

@@ -1,6 +1,6 @@
 const axios = require('axios');
 const { getBasiqAuthorizationHeader } = require('../../serverAuthentication');
-const { validateUserId } = require('../../utils/validation');
+const { getSessionUserId } = require('../../utils/sessionCookie');
 
 /**
  * This API endpoint retrieves a list of accounts. Each entry in the array is a separate account object.
@@ -9,12 +9,12 @@ const { validateUserId } = require('../../utils/validation');
  */
 
 const accounts = async (req, res) => {
-  
-  const { userId } = req.query;
-    
-  // Validate the userId query parameter
-  if (!validateUserId(userId)) {
-    res.status(400).json({ message: 'Invalid userId' });
+
+  // Require a valid session cookie — userId is never accepted from query params
+  // to prevent cross-user account enumeration via the server-side token.
+  const userId = getSessionUserId(req);
+  if (!userId) {
+    res.status(401).json({ message: 'Unauthorized' });
     return;
   }
   
@@ -42,7 +42,8 @@ const accounts = async (req, res) => {
 
     res.status(200).json(sortedAccounts);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    const basiqError = error.response?.data;
+    res.status(error.response?.status ?? 400).json(basiqError ?? { message: error.message });
   }
 };
 
