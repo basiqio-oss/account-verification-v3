@@ -1,5 +1,6 @@
 const axios = require('axios');
 const qs = require('qs');
+const { requireEnv } = require('./utils/env');
 
 /**
  * The Basiq API authentication process is fairly straight forward, we simply exchange our API key for a token which has an expiry of 60 minutes
@@ -35,9 +36,10 @@ async function updateServerToken() {
 }
 
 async function getNewServerToken() {
+  const basiqApiKey = requireEnv('BASIQ_API_KEY');
   const { data } = await axios.post('https://au-api.basiq.io/token', qs.stringify({ scope: 'SERVER_ACCESS' }), {
     headers: {
-      Authorization: `Basic ${process.env.BASIQ_API_KEY}`,
+      Authorization: `Basic ${basiqApiKey}`,
       'Content-Type': 'application/x-www-form-urlencoded',
       'basiq-version': '3.0',
     },
@@ -46,9 +48,10 @@ async function getNewServerToken() {
 }
 
 export async function getNewClientToken(userId) {
+  const basiqApiKey = requireEnv('BASIQ_API_KEY');
   const { data } = await axios.post('https://au-api.basiq.io/token', qs.stringify({ scope: 'CLIENT_ACCESS', userId }), {
     headers: {
-      Authorization: `Basic ${process.env.BASIQ_API_KEY}`,
+      Authorization: `Basic ${basiqApiKey}`,
       'Content-Type': 'application/x-www-form-urlencoded',
       'basiq-version': '3.0',
     },

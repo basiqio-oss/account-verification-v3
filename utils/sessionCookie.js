@@ -1,4 +1,5 @@
 import { createHmac, randomBytes, timingSafeEqual } from 'crypto';
+import { requireSessionSecret } from './env';
 
 /**
  * Server-side session cookie utilities.
@@ -30,9 +31,7 @@ function decodeBase64Url(value) {
 }
 
 function getSecret() {
-  const secret = process.env.SESSION_SECRET;
-  if (!secret) throw new Error('SESSION_SECRET environment variable is not set');
-  return secret;
+  return requireSessionSecret();
 }
 
 function signString(value) {
