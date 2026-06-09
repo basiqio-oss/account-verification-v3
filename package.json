@@ -6,7 +6,8 @@
     "start": "next start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "cypress": "cypress open --config-file=cypress.config.js",
-    "cypress:run": "cypress run --config-file=cypress.config.js"
+    "cypress:run": "cypress run --config-file=cypress.config.js",
+    "cypress:security": "cypress run --config-file=cypress.config.js --spec cypress/integration/security.spec.js"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.14",

@@ -38,7 +38,14 @@ jobs:
         uses: cypress-io/github-action@v6
         env:
           BASIQ_API_KEY: ${{ secrets.BASIQ_API_KEY }}
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
         with:
           wait-on: http://localhost:3000
           config-file: cypress.config.js
           runTests: cypress run --headless --disable-gpu
+
+      - name: Cypress security regressions
+        env:
+          BASIQ_API_KEY: ${{ secrets.BASIQ_API_KEY }}
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+        run: yarn cypress:security
