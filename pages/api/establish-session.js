@@ -1,16 +1,17 @@
 const axios = require('axios');
 const { getBasiqAuthorizationHeader } = require('../../serverAuthentication');
-const { validateUserId } = require('../../utils/validation');
-const { setSessionCookie, getSessionUserId } = require('../../utils/sessionCookie');
+const { validateUserId, validateConsentState } = require('../../utils/validation');
+const { setSessionCookie, getSessionUserId, consumeConsentState } = require('../../utils/sessionCookie');
 
 /**
  * Re-issues the session cookie for a returning user (e.g. after the Basiq consent redirect).
  *
- * The userId is verified against the Basiq API before the cookie is issued, so an
- * attacker cannot obtain a cookie for a userId they do not own.
+ * The request must present a valid one-time consent state bound to the same userId
+ * that was generated before redirecting to the external consent UI.
  *
- * Flow: app detects userId in sessionStorage but no session cookie → calls this endpoint
- * → Basiq confirms the user exists → cookie issued → downstream BFF routes work again.
+ * Flow: app receives redirect with state and has userId in sessionStorage → calls this
+ * endpoint with { userId, state } → server verifies signed one-time state cookie + Basiq
+ * user exists check → cookie issued → downstream BFF routes work again.
  */
 const establishSession = async (req, res) => {
   if (req.method !== 'POST') {
@@ -23,10 +24,15 @@ const establishSession = async (req, res) => {
     return res.status(200).json({ message: 'Session already active' });
   }
 
-  const { userId } = req.body ?? {};
+  const { userId, state } = req.body ?? {};
 
-  if (!validateUserId(userId)) {
-    return res.status(400).json({ message: 'Invalid userId' });
+  if (!validateUserId(userId) || !validateConsentState(state)) {
+    return res.status(400).json({ message: 'Invalid request' });
+  }
+
+  const hasValidState = consumeConsentState(req, res, { userId, state });
+  if (!hasValidState) {
+    return res.status(401).json({ message: 'Unauthorized' });
   }
 
   try {
@@ -39,11 +45,7 @@ const establishSession = async (req, res) => {
       },
     });
   } catch (error) {
-    const status = error.response?.status;
-    if (status === 404) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-    return res.status(502).json({ message: 'Could not verify user' });
+    return res.status(401).json({ message: 'Unauthorized' });
   }
 
   setSessionCookie(res, userId);

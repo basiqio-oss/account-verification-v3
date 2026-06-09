@@ -25,18 +25,22 @@ export function AccountVerificationFormStep0SignUp() {
     const userId = sessionStorage.getItem('userId');
     if (!userId) return;
 
-    const shouldSkip =
-      process.env.NODE_ENV !== 'production' ||
-      document.referrer === 'https://consent.basiq.io/';
-
-    if (!shouldSkip) return;
+    const url = new URL(window.location.href);
+    const state = url.searchParams.get('state');
+    if (!state) return;
 
     axios
-      .post('/api/establish-session', { userId })
-      .then(() => goToStep(2))
+      .post('/api/establish-session', { userId, state })
+      .then(() => {
+        url.searchParams.delete('state');
+        window.history.replaceState({}, '', `${url.pathname}${url.search}`);
+        goToStep(2);
+      })
       .catch(() => {
         // userId is stale or invalid — clear it and let the user start fresh
         sessionStorage.removeItem('userId');
+        url.searchParams.delete('state');
+        window.history.replaceState({}, '', `${url.pathname}${url.search}`);
       });
   }, [goToStep])
 

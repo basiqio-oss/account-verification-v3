@@ -19,9 +19,7 @@ export function AccountVerificationFormStep4SelectAccount() {
   const [selectedAccount, setSelectedAccount] = useState(null);
   const [validationError, setValidationError] = useState(false);
 
-  const { data, error, loading } = useAccountsData({
-    userId: userId,
-  });
+  const { data, error, loading } = useAccountsData();
 
   const errorOrNoData = error || !data || data.length === 0;
 
@@ -179,14 +177,14 @@ export function AccountVerificationFormStep4SelectAccount() {
 // RETRIEVE ACCOUNTS
 // Custom react hook for managing our fetch request to retrieves a list of accounts for the current user
 // The code for this API route can be found in `pages/api/accounts`
-function useAccountsData({ userId }) {
+function useAccountsData() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState();
   const [error, setError] = useState();
 
   const fetchAccounts = useCallback(() => {
     axios
-      .get('/api/accounts', { params: { userId } })
+      .get('/api/accounts')
       .then(res => {
         setData(res.data);
         setError(undefined);
@@ -196,7 +194,7 @@ function useAccountsData({ userId }) {
         setError(error);
         setLoading(false);
       });
-  }, [userId]);
+  }, []);
 
   useEffect(() => {
     fetchAccounts();

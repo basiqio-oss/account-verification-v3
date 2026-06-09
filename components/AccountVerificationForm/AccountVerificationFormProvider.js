@@ -127,7 +127,16 @@ export function AccountVerificationFormProvider({ children }) {
     const userId = sessionStorage.getItem('userId');
     // getClientToken() fetches from /api/client-token which reads the userId from the session cookie
     const token = await getClientToken();
-    window.location = (`https://consent.basiq.io/home?userId=${userId}&token=${token}&action=${action}`);
+    const { data } = await axios.post('/api/create-consent-state');
+    const params = new URLSearchParams({
+      userId,
+      token,
+      state: data.state,
+    });
+    if (action) {
+      params.set('action', action);
+    }
+    window.location = `https://consent.basiq.io/home?${params.toString()}`;
   }
 
   const contextValue = {
