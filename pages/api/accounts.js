@@ -9,6 +9,9 @@ const { getSessionUserId } = require('../../utils/sessionCookie');
  */
 
 const accounts = async (req, res) => {
+  if (req.method !== 'GET') {
+    return res.status(405).json({ message: 'Method not allowed' });
+  }
 
   // Require a valid session cookie — userId is never accepted from query params
   // to prevent cross-user account enumeration via the server-side token.
@@ -42,8 +45,13 @@ const accounts = async (req, res) => {
 
     res.status(200).json(sortedAccounts);
   } catch (error) {
-    const basiqError = error.response?.data;
-    res.status(error.response?.status ?? 400).json(basiqError ?? { message: error.message });
+    const status = error.response?.status;
+    console.error('[accounts] Upstream error', {
+      status: status ?? null,
+      message: error.message,
+      data: error.response?.data ?? null,
+    });
+    res.status(status && status >= 400 && status < 500 ? status : 502).json({ message: 'Request failed' });
   }
 };
 

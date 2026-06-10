@@ -1,6 +1,21 @@
 /** @type {import('next').NextConfig} */
+const ALLOWED_NODE_ENVS = ['development', 'test', 'production'];
+
+function getValidatedNodeEnv() {
+	const nodeEnv = process.env.NODE_ENV ?? 'development';
+	if (!ALLOWED_NODE_ENVS.includes(nodeEnv)) {
+		throw new Error(`Invalid NODE_ENV value: ${nodeEnv}`);
+	}
+	return nodeEnv;
+}
+
 const nextConfig = {
+	turbopack: {
+		root: __dirname,
+	},
+
 	async headers() {
+		const nodeEnv = getValidatedNodeEnv();
 		const headers = [
 			{ key: 'X-Frame-Options', value: 'DENY' },
 			{ key: 'X-Content-Type-Options', value: 'nosniff' },
@@ -9,7 +24,7 @@ const nextConfig = {
 			{ key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubDomains' },
 		];
 
-		if (process.env.NODE_ENV === 'production') {
+		if (nodeEnv === 'production') {
 			headers.push({
 				key: 'Content-Security-Policy',
 				value: [

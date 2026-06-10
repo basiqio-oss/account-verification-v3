@@ -16,6 +16,11 @@ const createUser = async (req, res) => {
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
+  const contentType = req.headers['content-type'] || '';
+  if (!contentType.toLowerCase().startsWith('application/json')) {
+    return res.status(415).json({ message: 'Unsupported media type' });
+  }
+
   const limit = consumeRateLimit(req, {
     keyPrefix: 'create-user',
     maxRequests: 5,
@@ -49,9 +54,13 @@ const createUser = async (req, res) => {
     setSessionCookie(res, data.id);
     res.status(200).json(data);
   } catch (error) {
-    const basiqError = error.response?.data;
-    console.error('[create-user] Basiq error:', JSON.stringify(basiqError ?? error.message));
-    res.status(error.response?.status ?? 400).json(basiqError ?? { message: error.message });
+    const status = error.response?.status;
+    console.error('[create-user] Upstream error', {
+      status: status ?? null,
+      message: error.message,
+      data: error.response?.data ?? null,
+    });
+    res.status(status && status >= 400 && status < 500 ? status : 502).json({ message: 'Request failed' });
   }
 };
 

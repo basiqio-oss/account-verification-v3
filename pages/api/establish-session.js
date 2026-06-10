@@ -18,6 +18,11 @@ const establishSession = async (req, res) => {
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
+  const contentType = req.headers['content-type'] || '';
+  if (!contentType.toLowerCase().startsWith('application/json')) {
+    return res.status(415).json({ message: 'Unsupported media type' });
+  }
+
   // If there is already a valid session cookie, nothing to do.
   const existing = getSessionUserId(req);
   if (existing) {
@@ -45,6 +50,10 @@ const establishSession = async (req, res) => {
       },
     });
   } catch (error) {
+    console.error('[establish-session] Upstream error', {
+      status: error.response?.status ?? null,
+      message: error.message,
+    });
     return res.status(401).json({ message: 'Unauthorized' });
   }
 
