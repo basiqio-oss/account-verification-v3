@@ -36,6 +36,7 @@ export function consumeRateLimit(req, { keyPrefix, maxRequests, windowMs }) {
 
   return {
     allowed: entry.count <= maxRequests,
+    maxRequests,
     remaining: Math.max(0, maxRequests - entry.count),
     resetAt: entry.resetAt,
   };

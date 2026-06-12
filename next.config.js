@@ -24,24 +24,8 @@ const nextConfig = {
 			{ key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubDomains' },
 		];
 
-		if (nodeEnv === 'production') {
-			headers.push({
-				key: 'Content-Security-Policy',
-				value: [
-					"default-src 'self'",
-					"base-uri 'self'",
-					"frame-ancestors 'none'",
-					"form-action 'self'",
-					"object-src 'none'",
-					"img-src 'self' data: https:",
-					"font-src 'self' data:",
-					"style-src 'self' 'unsafe-inline'",
-					"script-src 'self' 'unsafe-inline'",
-					"connect-src 'self' https://au-api.basiq.io https://consent.basiq.io",
-					'upgrade-insecure-requests',
-				].join('; '),
-			});
-		}
+		// CSP is now handled by pages/_document.js with per-request nonce
+		// to prevent 'unsafe-inline' script/style execution.
 
 		return [
 			{

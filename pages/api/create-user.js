@@ -25,8 +25,8 @@ function validateOrigin(req) {
  * Sets rate limit headers in the response for visibility.
  */
 function setRateLimitHeaders(res, limit) {
-  res.setHeader('X-RateLimit-Limit', limit.maxRequests);
-  res.setHeader('X-RateLimit-Remaining', limit.remaining);
+  res.setHeader('X-RateLimit-Limit', String(limit.maxRequests));
+  res.setHeader('X-RateLimit-Remaining', String(limit.remaining));
   res.setHeader('X-RateLimit-Reset', new Date(limit.resetAt).toISOString());
 }
 
