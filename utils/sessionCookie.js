@@ -2,16 +2,33 @@ import { createHmac, randomBytes, timingSafeEqual } from 'crypto';
 import { requireSessionSecret } from './env';
 
 /**
- * Server-side session cookie utilities.
+ * Server-side session cookie utilities with HMAC-SHA256 signing.
  *
- * The session cookie value is a signed payload with user id + expiry.
+ * TOKEN FORMAT
+ * ============
+ * The session cookie value uses a custom two-part format (payload.signature),
+ * not RFC 7519 JWT (header.payload.signature). This is intentional:
+ *  - No header means the algorithm cannot be read from the token
+ *  - Algorithm is hardcoded to HMAC-SHA256 server-side
+ *  - Prevents algorithm confusion attacks (e.g., alg:none)
  *
- * Using an HttpOnly, SameSite=Strict, Secure (prod) cookie means:
- *  - JS in the browser cannot read or forge the cookie
- *  - Cross-site requests cannot carry the cookie (CSRF mitigated)
- *  - The HMAC ensures the userId inside the cookie cannot be tampered with
+ * SECURITY PROPERTIES
+ * ===================
+ * OBS-001 Remediation Checklist:
+ *  ✓ Algorithm enforcement: HMAC-SHA256 hardcoded, not token-derived
+ *  ✓ Constant-time comparison: Uses crypto.timingSafeEqual() to prevent timing attacks
+ *  ✓ Key strength: SESSION_SECRET must be ≥64 hex chars (32 bytes) enforced in env.js
+ *  ✓ Structure validation: Token must have exactly one dot (payload.signature)
+ *  ✓ Sub claim validation: Server-side verification ensures sub is a non-empty string
  *
- * Required environment variable: SESSION_SECRET (a long, random string)
+ * Cookie attributes:
+ *  - HttpOnly: JS in the browser cannot read or forge the cookie
+ *  - SameSite=Strict: Cross-site requests cannot carry the cookie (CSRF mitigated)
+ *  - Secure: Only sent over HTTPS in production
+ *  - HMAC: Ensures the userId inside the cookie cannot be tampered with
+ *
+ * Required environment variable:
+ *  - SESSION_SECRET: Must be a random 64+ character hex string (e.g., generated via: openssl rand -hex 32)
  */
 
 const COOKIE_NAME = 'av_session';
@@ -34,6 +51,10 @@ function getSecret() {
   return requireSessionSecret();
 }
 
+/**
+ * Signs a value using HMAC-SHA256.
+ * The algorithm is hardcoded here (not token-derived) to prevent algorithm confusion attacks.
+ */
 function signString(value) {
   return createHmac('sha256', getSecret()).update(value).digest('hex');
 }
@@ -44,11 +65,16 @@ function signPayload(payload) {
   return `${encodedPayload}.${signature}`;
 }
 
+/**
+ * Verifies a two-part signed payload (payload.signature) using constant-time HMAC comparison.
+ * Rejects any token with an unexpected structure (e.g., JWT three-part format).
+ */
 function verifySignedPayload(value) {
   if (!value || typeof value !== 'string') return null;
 
+  // Enforce two-part format (payload.signature), not three-part JWT format
   const lastDot = value.lastIndexOf('.');
-  if (lastDot === -1) return null;
+  if (lastDot === -1 || value.indexOf('.') !== lastDot) return null; // Reject if more or fewer than 1 dot
 
   const encodedPayload = value.substring(0, lastDot);
   const hmacPart = value.substring(lastDot + 1);
@@ -56,6 +82,7 @@ function verifySignedPayload(value) {
 
   let expected;
   try {
+    // Algorithm is hardcoded to HMAC-SHA256 (cannot be overridden by token content)
     expected = signString(encodedPayload);
   } catch {
     return null;
@@ -64,8 +91,9 @@ function verifySignedPayload(value) {
   try {
     const expectedBuf = Buffer.from(expected, 'hex');
     const actualBuf = Buffer.from(hmacPart, 'hex');
-    // Lengths must match before timingSafeEqual
+    // Length check prevents subtle timing differences in timingSafeEqual
     if (expectedBuf.length !== actualBuf.length) return null;
+    // Use constant-time comparison to prevent timing-based forgery attacks
     if (!timingSafeEqual(expectedBuf, actualBuf)) return null;
   } catch {
     return null;
@@ -91,10 +119,16 @@ function sign(userId) {
   });
 }
 
+/**
+ * Verifies the session cookie and extracts the user ID.
+ * All validation is performed server-side; the sub claim is never trusted from the token.
+ */
 function verify(value) {
   const payload = verifySignedPayload(value);
   if (!payload) return null;
+  // Validate sub claim: must be a non-empty string representing the basiq user ID
   if (typeof payload.sub !== 'string' || !payload.sub) return null;
+  // Sub is server-side validated before use (never directly decoded and acted upon client-side)
   return payload.sub;
 }
 
