@@ -108,7 +108,10 @@ describe('Security regressions', () => {
       method: 'POST',
       url: '/api/create-user',
       failOnStatusCode: false,
-      headers: { 'x-forwarded-for': testIp },
+      headers: {
+        'x-forwarded-for': testIp,
+        'origin': Cypress.config('baseUrl'),
+      },
       body: { email: 'invalid-email' },
     });
 
