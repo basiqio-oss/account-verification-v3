@@ -49,9 +49,23 @@ const initialAccountVerificationFormState = {
 export function AccountVerificationFormProvider({ children }) {
   const router = useRouter();
 
-  const [accountVerificationFormState, setAccountVerificationFormState] = useState(initialAccountVerificationFormState);
+  const [accountVerificationFormState, setAccountVerificationFormState] = useState(() => {
+    if (typeof window === 'undefined') return initialAccountVerificationFormState;
+    try {
+      const saved = sessionStorage.getItem('selectedAccount');
+      return { ...initialAccountVerificationFormState, selectedAccount: saved ? JSON.parse(saved) : undefined };
+    } catch {
+      return initialAccountVerificationFormState;
+    }
+  });
   const updateAccountVerificationFormState = newState => {
-    setAccountVerificationFormState(oldState => ({ ...oldState, ...newState }));
+    setAccountVerificationFormState(oldState => {
+      const next = { ...oldState, ...newState };
+      if (newState.selectedAccount !== undefined) {
+        sessionStorage.setItem('selectedAccount', JSON.stringify(newState.selectedAccount));
+      }
+      return next;
+    });
   };
   const [hasCompletedForm, setHasCompletedForm] = useState(false);
 
@@ -74,7 +88,7 @@ export function AccountVerificationFormProvider({ children }) {
     setCurrentStep(0);
     setCancelling(false);
     setHasCompletedForm(false);
-    sessionStorage.clear()
+    sessionStorage.clear();
   }
 
   // State for managing cancelling the account verification form
@@ -88,8 +102,10 @@ export function AccountVerificationFormProvider({ children }) {
     setCancelling(true);
     try {
       await deleteBasiqConnection();
+      // Invalidate the session cookie so the BFF routes are no longer callable
+      await axios.post('/api/clear-session').catch(() => {});
       router.push('/');
-      sessionStorage.clear()
+      sessionStorage.clear();
       resetState();
     } catch {
       // If something went wrong while deleting the basiq connection, we send the user to the home page via a full page refresh so all state is reset
@@ -99,26 +115,28 @@ export function AccountVerificationFormProvider({ children }) {
 
   // Called when the user has successfully finished all steps
   async function finish() {
-    try {
-      // Delete user at end of process when not in prod to clean up test data
-      // You can also enable this for production if you do not wish to maintain the user bucket or connection e.g. for a once off check 
-      if (process.env.NODE_ENV !== 'production') {
-        await deleteUser()
-      }
-      setHasCompletedForm(true);
-      sessionStorage.clear()
-      router.push('/');
-    } catch {
-      // If something went wrong while deleting the basiq connection, we send the user to the home page via a full page refresh so all state is reset
-      window.location = window.location.origin;
-    }
+    // Clear session state first so a crash mid-cleanup cannot leave stale
+    // sessionStorage that would cause Step0's useEffect to skip to step 3.
+    resetState();
+    // Invalidate the session cookie — fire-and-forget, non-fatal
+    axios.post('/api/clear-session').catch(() => {});
   }
 
   // Redirect to the external Basiq Consent UI
   async function goToConsent(action = null) {
-    let userId = sessionStorage.getItem("userId")
-    const token = await getClientToken(userId);
-    window.location = (`https://consent.basiq.io/home?userId=${userId}&token=${token}&action=${action}`);
+    const userId = sessionStorage.getItem('userId');
+    // getClientToken() fetches from /api/client-token which reads the userId from the session cookie
+    const token = await getClientToken();
+    const { data } = await axios.post('/api/create-consent-state');
+    const params = new URLSearchParams({
+      userId,
+      token,
+      state: data.state,
+    });
+    if (action) {
+      params.set('action', action);
+    }
+    window.location = `https://consent.basiq.io/home?${params.toString()}`;
   }
 
   const contextValue = {
@@ -132,13 +150,11 @@ export function AccountVerificationFormProvider({ children }) {
     finish,
     accountVerificationFormState,
     updateAccountVerificationFormState,
-    getUserConsent,
     basiqConnection,
     createBasiqConnection,
     reset: resetState,
     hasCompletedForm,
     goToConsent,
-    deleteUser,
   };
 
   return (
@@ -306,7 +322,6 @@ function useBasiqConnection({ currentStep, userId }) {
       completed,
       reset: resetState,
     },
-    getUserConsent,
     deleteBasiqConnection,
     createBasiqConnection
   };
@@ -321,25 +336,11 @@ function newStepError({ detail, title }) {
   return error;
 }
 
-// Creates a new connection with the Basiq API
-// IMPORTANT: Under no circumstance should you store your customers credentials anywhere in your application
-// https://api.basiq.io/reference/create-a-connection
-// https://api.basiq.io/reference/jobs
-async function getUserConsent(userId) {
-  const response = await axios.get(`https://au-api.basiq.io/users/${userId}/consents`);
-  return response.data;
-}
-
 // Permanently deletes a connection with the Basiq API
 // Once the connection has been deleted, all of the associated financial data e.g. accounts and transactions can still be accessed via the users end-point
 // https://api.basiq.io/reference/delete-a-connection
 async function deleteConnection({ userId, jobId }) {
   const response = await axios.delete(`https://au-api.basiq.io/users/${userId}/connections/${jobId}`);
-  return response.data.id;
-}
-
-async function deleteUser({ userId }) {
-  const response = await axios.delete(`https://au-api.basiq.io/users/${userId}`);
   return response.data.id;
 }
 

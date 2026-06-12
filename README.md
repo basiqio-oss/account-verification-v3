@@ -1,47 +1,60 @@
 # Account verification
 
-This application takes a user through the account verification process using the Basiq API. This project has been to built with three main technologies:
+This application takes a user through the account verification process using the Basiq API. It is built with three main technologies:
 
 1. [Basiq API](https://api.basiq.io)
    Basiq is a Consumer Data Right accredited API platform that provides the building blocks of financial services.
 2. [Next.js](https://github.com/vercel/next.js/)
-   A framework for React, Next.js gives you the best developer experience with all the features you need for production: hybrid static & server rendering, TypeScript support, smart bundling, route pre-fetching, and more. No config needed.
-3. [Tailwind](https://github.com/tailwindlabs/tailwindcss)
-   A utility-first CSS framework that can be composed to build any design, directly in your markup.
+   A framework for React that provides hybrid static & server rendering, TypeScript support, smart bundling, and route pre-fetching.
+3. [Tailwind CSS](https://github.com/tailwindlabs/tailwindcss)
+   A utility-first CSS framework composed directly in your markup.
+
+## Security model
+
+All Basiq partner credentials (`BASIQ_API_KEY`) and the server-scoped access token (`SERVER_ACCESS`) are handled exclusively in Next.js API routes (`pages/api/`). They are never sent to the browser.
+
+The browser only ever receives a short-lived, user-scoped `CLIENT_ACCESS` token minted on the server after the user is authenticated.
+
+API routes that call the Basiq API on behalf of a user are protected by an HMAC-SHA256 signed HttpOnly session cookie (`av_session`). The cookie is issued when a user is created, and invalidated when the flow is cancelled or completed. The HMAC signature uses a `SESSION_SECRET` environment variable that must be set separately from the API key.
 
 ## Getting started
 
 ### 1. Use the template to create your own repository
 
-To get started, you will need click the "Use this template" button on the main page of the repo - this will generate a new repository.
-
-![template repository screenshot](docs/Group_2681.png)
-
-Then you will need to clone the repository you have just generated. 
+Click the "Use this template" button on the main page of the repo to generate a new repository, then clone it:
 
 ```sh
 git clone git@github.com:<your_username>/account-verification.git
 cd account-verification
 ```
 
-### 2. API key setup
+### 2. Environment setup
 
-If you haven't already, [Sign-up](https://dashboard.basiq.io/login) to the Basiq API service and grab your API key for your application (via the [Developer Dashboard](https://dashboard.basiq.io/)).
+If you haven't already, [sign up](https://dashboard.basiq.io/login) to the Basiq API service and grab your API key for your application via the [Developer Dashboard](https://dashboard.basiq.io/).
 
-Once you have a Basiq API key, move the sample `.env.sample` file to `.env.local` and paste in your Basiq API key next to `BASIQ_API_KEY=`
+Copy the sample environment file and fill in both values:
 
 ```sh
-mv .env.sample .env.local
+cp .env.sample .env.local
 ```
 
 ```diff
 - BASIQ_API_KEY=
-+ BASIQ_API_KEY=abc123
++ BASIQ_API_KEY=<your_basiq_api_key>
+
+- SESSION_SECRET=
++ SESSION_SECRET=<random_64_hex_chars>
 ```
 
-### 3. Install dependencies
+Generate a secure `SESSION_SECRET` with:
 
-Install dependencies with [`yarn`](https://github.com/yarnpkg/yarn). If you don't have this installed, please read their [installation guide](https://yarnpkg.com/en/docs/install) for detailed instructions.
+```sh
+openssl rand -hex 32
+```
+
+> **Important:** `BASIQ_API_KEY` and `SESSION_SECRET` must be different values. Never commit `.env.local` — it is listed in `.gitignore`.
+
+### 3. Install dependencies
 
 ```sh
 yarn
@@ -53,51 +66,57 @@ yarn
 yarn dev
 ```
 
-🎉 You should now see the website running at `http://localhost:3000`
+The app will be running at `http://localhost:3000`.
 
 ## Testing
 
 ### Linting
 
-This project uses `eslint` to enforce code quality and code formatting. For more information about using NextJS and ESLint, please refer to [this guide](https://nextjs.org/docs/basic-features/eslint).
+This project uses `eslint` to enforce code quality. See the [Next.js ESLint guide](https://nextjs.org/docs/basic-features/eslint) for more information.
 
 ### End-to-End tests
 
-[Cypress](https://github.com/cypress-io/cypress) is a test runner used for End-to-End (E2E) and Integration Testing. This project includes a simple E2E test which is used to test the account verification form flow.
+[Cypress](https://github.com/cypress-io/cypress) is used for End-to-End testing. To run the tests, first start the dev server, then in a separate terminal:
 
-To run the E2E tests locally, you will first need have the website up and running. This can be done by either running `yarn dev` or `yarn build && yarn start`. The latter can be used when you want to run the tests againts the production build of the website. Once you have the website running in another terminal window run `yarn cypress`.
+```sh
+yarn cypress
+```
+
+You can also run tests against the production build:
+
+```sh
+yarn build && yarn start
+# then in another terminal:
+yarn cypress
+```
 
 ## Theming
 
-This started kit uses [TailwindCSS](https://tailwindcss.com/docs/configuration) for all styling. Easily customise the theme in `tailwind.config.js` (colours, font etc) and `styles.css` (font import, CSS variables used for icon gradients etc).
-
-Follow these steps to make your Account Verification experience your own.
+This starter kit uses [Tailwind CSS](https://tailwindcss.com/docs/configuration) for all styling. Customise the theme in `tailwind.config.js` (colours, fonts) and `styles.css` (font imports, CSS variables).
 
 ### 1. Colours
 
-This starter kit has a custom naming convention, aiming to communicate semantic intent. All the colours the app uses are defined and can be customised in `tailwind.config.js`.
+All colours are defined in `tailwind.config.js` using a semantic naming convention (e.g. `primary-bold`, `neutral-muted`). Update them to match your brand.
 
 ### 2. Font
 
-This starter kit uses Inter font family.
+This starter kit uses the Inter font family.
 
-1. Change the font @import in `styles.css`
-2. Change the fontFamily in `tailwind.config.js` (`'Inter'`) to match the font name
+1. Change the font `@import` in `styles.css`
+2. Update `fontFamily` in `tailwind.config.js` to match
 
 ### 3. Product logos
 
-You can simply replace these SVG files, using the same file name.
+Replace these SVG files using the same filenames:
 
-- `product-full-logo.svg` - used in `index.js` only
-- `product-square-logo.svg` - used for Account Verification Form
+- `product-full-logo.svg` — used on the home page
+- `product-square-logo.svg` — used in the Account Verification form steps
 
-NOTE: Out-of-the-box, the Account Verification Form layout works best with a perfectly square logo, since it uses the square institution logo on some steps.
+The form layout works best with a square logo.
 
 ### 4. Product copywriting
 
-Search for `PRODUCT-COPY` in the codebase to find all the places that needs product-specific copywriting.
-
-Make sure to read through all copywriting in the files to make sure it's accurate with the product you are building.
+Search for `PRODUCT-COPY` in the codebase to find every place that needs product-specific text. Read through all copy to ensure it matches the product you are building.
 
 ## Icons
 

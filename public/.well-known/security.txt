@@ -1,0 +1,4 @@
+Contact: security@basiq.io
+Expires: 2027-06-12T00:00:00.000Z
+Preferred-Languages: en
+Policy: https://docs.basiq.io/en/articles/4668914-basiq-information-security-policy
